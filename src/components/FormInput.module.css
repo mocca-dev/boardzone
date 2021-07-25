@@ -23,6 +23,8 @@
   margin-right: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-transition: all 0.25s linear;
+  transition: all 0.25s linear;
 }
 
 .inputContainer select option {
@@ -41,6 +43,11 @@
   background-position-y: 11px;
   padding-right: 2rem;
   fill: white;
+}
+
+.inputContainer input:hover,
+.inputContainer select:hover {
+  background-color: #444;
 }
 
 ul {

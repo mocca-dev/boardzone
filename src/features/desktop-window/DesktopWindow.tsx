@@ -77,6 +77,7 @@ const DesktopWindow: FC = () => {
       }
       return false;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fill the team
