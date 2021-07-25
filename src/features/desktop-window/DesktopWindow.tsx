@@ -7,7 +7,7 @@ import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
 import eventsData from './events-mock.json';
 
-interface IRoster {
+export interface IRoster {
   assists: any;
   deaths: any;
   is_bot: any;
@@ -20,7 +20,7 @@ interface IRoster {
   team_id: any;
 }
 
-export interface IRosterOption extends IRoster {
+interface IRosterOption extends IRoster {
   disabled: boolean;
 }
 
@@ -51,13 +51,13 @@ const DesktopWindow: FC = () => {
     },
     bottomTeam: {
       name: 'BottomTeam',
-      member1: { name: '', kills: 0 },
-      member2: { name: '', kills: 0 },
+      member1: { name: 'Selecciona a tu compañero', kills: 0 },
+      member2: { name: 'Selecciona a tu compañero', kills: 0 },
     },
   });
   const [playersAmount, setPlayersAmount] = useState('two');
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
-  const [team, setTeam] = useState<IRosterOption[]>([]);
+  const [team, setTeam] = useState<IRoster[]>([]);
 
   // Process de raw data and setting the local player
   useEffect(() => {
@@ -70,6 +70,7 @@ const DesktopWindow: FC = () => {
           ...teamsConfig,
           topTeam: {
             ...teamsConfig.topTeam,
+            name: 'Team' + roster.player.split('#')[0],
             member1: { name: roster.player, kills: roster.kills },
           },
         });
@@ -99,23 +100,38 @@ const DesktopWindow: FC = () => {
           (member) => roster.player === member.player
         );
         if (!isAlreadyInTheTeam) {
-          setTeam([...team, { ...roster, disabled: false }]);
+          setTeam([...team, { ...roster }]);
         }
       }
       return false;
     });
   }, [localPlayer, team]);
 
-  const updateMemberAvaibility = (selectedMemberName: string) => {
-    setTeam(
-      team.map((member) => {
-        if (member.player.includes(selectedMemberName)) {
-          return { ...member, disabled: true };
-        } else {
-          return member;
-        }
-      })
+  const fillRemainingMemebers = (partner?: IRoster): void => {
+    const remainingMemebers = team.filter(
+      (member) => !member.player.includes(partner?.player)
     );
+
+    const player1 = remainingMemebers[0];
+    const player2 = remainingMemebers[1];
+
+    const updatedTeamsConfig = {
+      ...teamsConfig,
+      topTeam: {
+        ...teamsConfig.topTeam,
+        member2: {
+          name: partner?.player,
+          kills: partner?.kills,
+        },
+      },
+      bottomTeam: {
+        ...teamsConfig.bottomTeam,
+        name: 'Team' + player1.player.split('#')[0],
+        member1: { name: player1.player, kills: player1.kills },
+        member2: { name: player2.player, kills: player2.kills },
+      },
+    };
+    setTeamsConfig(updatedTeamsConfig);
   };
 
   return (
@@ -153,33 +169,24 @@ const DesktopWindow: FC = () => {
                 type="text"
               />
               <FormInput
-                label="You"
+                label={'You'}
+                afterIconText={teamsConfig.topTeam.member1.kills + ''}
                 isYou={true}
-                // options={team}
                 onChange={() => {}}
                 value={localPlayer ? localPlayer?.player.split('#')[0] : ''}
                 type="text"
               />
               <FormInput
-                label="Member#2"
+                label={'Member#2'}
+                afterIconText={teamsConfig.topTeam.member2.kills + ''}
                 options={team}
                 onChange={(e) => {
                   const selectedMember = team.find((member) =>
                     member.player.includes(e.target.value)
                   );
-                  setTeamsConfig({
-                    ...teamsConfig,
-                    topTeam: {
-                      ...teamsConfig.topTeam,
-                      member2: {
-                        name: e.target.value,
-                        kills: selectedMember?.kills,
-                      },
-                    },
-                  });
-                  updateMemberAvaibility(e.target.value);
+                  if (selectedMember) fillRemainingMemebers(selectedMember);
                 }}
-                value={teamsConfig.topTeam.member2.name}
+                value={teamsConfig.topTeam.member2.name.split('#')[0]}
                 type="select"
               />
             </div>
@@ -201,48 +208,18 @@ const DesktopWindow: FC = () => {
                   type="text"
                 />
                 <FormInput
-                  label="Member#1"
-                  options={team}
-                  onChange={(e) => {
-                    const selectedMember = team.find((member) =>
-                      member.player.includes(e.target.value)
-                    );
-                    setTeamsConfig({
-                      ...teamsConfig,
-                      bottomTeam: {
-                        ...teamsConfig.bottomTeam,
-                        member1: {
-                          name: e.target.value,
-                          kills: selectedMember?.kills,
-                        },
-                      },
-                    });
-                    updateMemberAvaibility(e.target.value);
-                  }}
-                  value={teamsConfig.bottomTeam.member1.name}
-                  type="select"
+                  label={'Member#1'}
+                  afterIconText={teamsConfig.bottomTeam.member1.kills + ''}
+                  onChange={() => {}}
+                  value={teamsConfig.bottomTeam.member1.name.split('#')[0]}
+                  type="text"
                 />
                 <FormInput
-                  label="Member#2"
-                  options={team}
-                  onChange={(e) => {
-                    const selectedMember = team.find((member) =>
-                      member.player.includes(e.target.value)
-                    );
-                    setTeamsConfig({
-                      ...teamsConfig,
-                      bottomTeam: {
-                        ...teamsConfig.bottomTeam,
-                        member2: {
-                          name: e.target.value,
-                          kills: selectedMember?.kills,
-                        },
-                      },
-                    });
-                    updateMemberAvaibility(e.target.value);
-                  }}
-                  value={teamsConfig.bottomTeam.member2.name}
-                  type="select"
+                  label={'Member#2'}
+                  afterIconText={teamsConfig.bottomTeam.member2.kills + ''}
+                  onChange={() => {}}
+                  value={teamsConfig.bottomTeam.member2.name.split('#')[0]}
+                  type="text"
                 />
               </div>
             )}
