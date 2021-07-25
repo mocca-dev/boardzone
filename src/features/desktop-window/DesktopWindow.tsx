@@ -7,7 +7,7 @@ import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
 import eventsData from './events-mock.json';
 
-export interface IRoster {
+interface IRoster {
   assists: any;
   deaths: any;
   is_bot: any;
@@ -19,25 +19,60 @@ export interface IRoster {
   score: any;
   team_id: any;
 }
+
+export interface IRosterOption extends IRoster {
+  disabled: boolean;
+}
+
+interface ITeamMemberConfig {
+  name: string;
+  kills: number;
+}
+
+interface ITeamConfig {
+  name: string;
+  member1: ITeamMemberConfig;
+  member2: ITeamMemberConfig;
+}
+export interface ITeamsConfig {
+  topTeam: ITeamConfig;
+  bottomTeam: ITeamConfig;
+}
+
 const getKeyValue = (key: string) => (obj: Record<string, any>) => obj[key];
 
 const DesktopWindow: FC = () => {
   // const { t } = useTranslation();
-  const [teamsConfig, setTeamsConfig] = useState({
-    topTeam: { name: 'TopTeam', member1: '', member2: '', points: '10' },
-    bottomTeam: { name: 'BottomTeam', member1: '', member2: '', points: '8' },
+  const [teamsConfig, setTeamsConfig] = useState<ITeamsConfig>({
+    topTeam: {
+      name: 'TopTeam',
+      member1: { name: '', kills: 0 },
+      member2: { name: '', kills: 0 },
+    },
+    bottomTeam: {
+      name: 'BottomTeam',
+      member1: { name: '', kills: 0 },
+      member2: { name: '', kills: 0 },
+    },
   });
-  const [playersAmount, setPlayersAmount] = useState('one');
+  const [playersAmount, setPlayersAmount] = useState('two');
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
-  const [team, setTeam] = useState<IRoster[]>([]);
+  const [team, setTeam] = useState<IRosterOption[]>([]);
 
-  // Process de raw data
+  // Process de raw data and setting the local player
   useEffect(() => {
     eventsData.some((event) => {
       const rosterKey = Object.keys(event.info.match_info)[0];
       const roster: IRoster = getKeyValue(rosterKey)(event.info.match_info);
       if (roster.is_local) {
         setLocalPlayer(roster);
+        setTeamsConfig({
+          ...teamsConfig,
+          topTeam: {
+            ...teamsConfig.topTeam,
+            member1: { name: roster.player, kills: roster.kills },
+          },
+        });
         return true;
       }
       return false;
@@ -48,7 +83,9 @@ const DesktopWindow: FC = () => {
   useEffect(() => {
     eventsData.some((event) => {
       const rosterKey = Object.keys(event.info.match_info)[0];
-      const roster: IRoster = getKeyValue(rosterKey)(event.info.match_info);
+      const roster: IRosterOption = getKeyValue(rosterKey)(
+        event.info.match_info
+      );
       // Roster must be of type IRoster and must be in the team and must not
       // be the local and there can be more than 4 members
       if (
@@ -61,12 +98,24 @@ const DesktopWindow: FC = () => {
           (member) => roster.player === member.player
         );
         if (!isAlreadyInTheTeam) {
-          setTeam([...team, roster]);
+          setTeam([...team, { ...roster, disabled: false }]);
         }
       }
       return false;
     });
   }, [localPlayer, team]);
+
+  const updateMemberAvaibility = (selectedMemberName: string) => {
+    setTeam(
+      team.map((member) => {
+        if (member.player.includes(selectedMemberName)) {
+          return { ...member, disabled: true };
+        } else {
+          return member;
+        }
+      })
+    );
+  };
 
   return (
     <>
@@ -105,32 +154,31 @@ const DesktopWindow: FC = () => {
               <FormInput
                 label="You"
                 isYou={true}
-                options={team}
-                onChange={(e) =>
-                  setTeamsConfig({
-                    ...teamsConfig,
-                    topTeam: {
-                      ...teamsConfig.topTeam,
-                      member1: e.target.value,
-                    },
-                  })
-                }
-                value={teamsConfig.topTeam.member1}
-                type="select"
+                // options={team}
+                onChange={() => {}}
+                value={localPlayer ? localPlayer?.player.split('#')[0] : ''}
+                type="text"
               />
               <FormInput
                 label="Member#2"
                 options={team}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const selectedMember = team.find((member) =>
+                    member.player.includes(e.target.value)
+                  );
                   setTeamsConfig({
                     ...teamsConfig,
                     topTeam: {
                       ...teamsConfig.topTeam,
-                      member2: e.target.value,
+                      member2: {
+                        name: e.target.value,
+                        kills: selectedMember?.kills,
+                      },
                     },
-                  })
-                }
-                value={teamsConfig.topTeam.member2}
+                  });
+                  updateMemberAvaibility(e.target.value);
+                }}
+                value={teamsConfig.topTeam.member2.name}
                 type="select"
               />
             </div>
@@ -154,31 +202,45 @@ const DesktopWindow: FC = () => {
                 <FormInput
                   label="Member#1"
                   options={team}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const selectedMember = team.find((member) =>
+                      member.player.includes(e.target.value)
+                    );
                     setTeamsConfig({
                       ...teamsConfig,
                       bottomTeam: {
                         ...teamsConfig.bottomTeam,
-                        member1: e.target.value,
+                        member1: {
+                          name: e.target.value,
+                          kills: selectedMember?.kills,
+                        },
                       },
-                    })
-                  }
-                  value={teamsConfig.bottomTeam.member1}
+                    });
+                    updateMemberAvaibility(e.target.value);
+                  }}
+                  value={teamsConfig.bottomTeam.member1.name}
                   type="select"
                 />
                 <FormInput
                   label="Member#2"
                   options={team}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const selectedMember = team.find((member) =>
+                      member.player.includes(e.target.value)
+                    );
                     setTeamsConfig({
                       ...teamsConfig,
                       bottomTeam: {
                         ...teamsConfig.bottomTeam,
-                        member2: e.target.value,
+                        member2: {
+                          name: e.target.value,
+                          kills: selectedMember?.kills,
+                        },
                       },
-                    })
-                  }
-                  value={teamsConfig.bottomTeam.member2}
+                    });
+                    updateMemberAvaibility(e.target.value);
+                  }}
+                  value={teamsConfig.bottomTeam.member2.name}
                   type="select"
                 />
               </div>
@@ -190,8 +252,7 @@ const DesktopWindow: FC = () => {
           <Board
             localName={localPlayer?.player}
             hasSecond={playersAmount === 'two'}
-            topData={teamsConfig.topTeam}
-            bottomData={teamsConfig.bottomTeam}
+            teamsConfig={teamsConfig}
           />
         </aside>
         {/* <footer className={style.footer}>

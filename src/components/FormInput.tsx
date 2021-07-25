@@ -1,4 +1,4 @@
-import { IRoster } from 'features/desktop-window/DesktopWindow';
+import { IRosterOption } from 'features/desktop-window/DesktopWindow';
 import React, { FC, useEffect, useState } from 'react';
 import style from './FormInput.module.css';
 
@@ -7,7 +7,7 @@ interface IFormInput {
   type: string;
   value: any;
   isYou?: boolean;
-  options?: IRoster[];
+  options?: IRosterOption[];
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -22,7 +22,9 @@ export const FormInput: FC<IFormInput> = ({
   options,
 }) => {
   const [radioLables, setRadioLabels] = useState<string[]>([]);
-  const [mappedOptions, setMappedOptions] = useState<IRoster[] | undefined>([]);
+  const [mappedOptions, setMappedOptions] = useState<
+    IRosterOption[] | undefined
+  >([]);
 
   useEffect(() => {
     if (type === 'radio' && label) {
@@ -51,14 +53,19 @@ export const FormInput: FC<IFormInput> = ({
         </div>
       )}
       {type === 'text' && (
-        <input type="text" value={value} onChange={onChange} />
+        <input type="text" value={value} onChange={onChange} disabled={isYou} />
       )}
       {type === 'select' && (
         <select value={value} onChange={onChange}>
           <option defaultValue="true">Selecciona un jugador...</option>
           {mappedOptions?.map((option) => (
-            <option key={option.player} value={option.player}>
+            <option
+              key={option.player}
+              value={option.player}
+              disabled={option.disabled}
+            >
               {option.player}
+              {option.disabled ? 'si' : 'no'}
             </option>
           ))}
         </select>
@@ -73,7 +80,7 @@ export const FormInput: FC<IFormInput> = ({
                 name={label}
                 value={radio}
                 onChange={onChange}
-                defaultChecked={radioLables[0] === radio}
+                defaultChecked={radioLables[1] === radio}
               />
               <label htmlFor={radio}>{radio}</label>
               <div className="check"></div>

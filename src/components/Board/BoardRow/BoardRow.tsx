@@ -3,7 +3,7 @@ import style from './BoardRow.module.css';
 
 interface IBoardRow {
   name?: string;
-  points?: string;
+  points?: number;
   youName?: boolean;
 }
 
