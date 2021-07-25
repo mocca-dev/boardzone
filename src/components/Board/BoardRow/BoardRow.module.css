@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.container.you {
+  color: #daea4c;
+}
+
 .name {
   white-space: nowrap;
   overflow: hidden;
@@ -14,23 +18,4 @@
 
 .points {
   margin-right: 15px;
-}
-
-.youTag {
-  font-weight: bold;
-  background: #daea4c;
-  color: black;
-  border-radius: 0 3px 3px 0;
-  font-size: 0.5rem;
-  height: 0.96rem;
-  padding: 1px 5px;
-  padding-bottom: 0;
-}
-
-.youTagTriangle {
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-right: 10px solid #daea4c;
-  border-bottom: 7px solid transparent;
 }

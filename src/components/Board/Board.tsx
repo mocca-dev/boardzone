@@ -18,7 +18,7 @@ export const Board: FC<IBoard> = ({ hasSecond, teamsConfig, localName }) => {
             teamsConfig.topTeam.member1.kills +
             teamsConfig.topTeam.member2.kills
           }
-          youName={hasSecond && localName === teamsConfig.topTeam.name}
+          youName={hasSecond && localName === teamsConfig.topTeam.member1.name}
         />
         {hasSecond && (
           <BoardRow
