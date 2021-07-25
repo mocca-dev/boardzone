@@ -66,7 +66,6 @@ const DesktopWindow: FC = () => {
       }
       return false;
     });
-    console.log(team);
   }, [localPlayer, team]);
 
   return (

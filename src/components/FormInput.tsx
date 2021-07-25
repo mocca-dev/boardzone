@@ -57,14 +57,16 @@ export const FormInput: FC<IFormInput> = ({
         <select value={value} onChange={onChange}>
           <option defaultValue="true">Selecciona un jugador...</option>
           {mappedOptions?.map((option) => (
-            <option value={option.player}>{option.player}</option>
+            <option key={option.player} value={option.player}>
+              {option.player}
+            </option>
           ))}
         </select>
       )}
       {type === 'radio' && (
         <ul>
           {radioLables.map((radio) => (
-            <li>
+            <li key={radio}>
               <input
                 type="radio"
                 id={radio}
