@@ -13,7 +13,6 @@
   grid-area: main;
 }
 .aside {
-  /* background: green; */
   grid-area: aside;
 }
 
@@ -24,4 +23,28 @@
 
 .formRow {
   display: flex;
+}
+
+.membersWithSwitch {
+  display: flex;
+  align-items: flex-end;
+}
+
+.membersWithSwitch.withBtn label:first-child input {
+  margin-right: 5px;
+}
+
+.switchBtn {
+  cursor: pointer;
+  height: 50px;
+  background: 0;
+  border: 0;
+  margin-right: 5px;
+  filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
+    brightness(90%) contrast(119%);
+}
+
+.switchBtn img {
+  height: 20px;
+  width: 20px;
 }

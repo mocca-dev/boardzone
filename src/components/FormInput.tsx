@@ -9,6 +9,7 @@ interface IFormInput {
   isYou?: boolean;
   options?: IRoster[];
   afterIconText?: string;
+  disabled?: boolean;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -22,6 +23,7 @@ export const FormInput: FC<IFormInput> = ({
   isYou,
   options,
   afterIconText,
+  disabled,
 }) => {
   const [radioLables, setRadioLabels] = useState<string[]>([]);
   const [mappedOptions, setMappedOptions] = useState<IRoster[] | undefined>([]);
@@ -63,7 +65,13 @@ export const FormInput: FC<IFormInput> = ({
         </div>
       )}
       {type === 'text' && (
-        <input type="text" value={value} onChange={onChange} disabled={isYou} />
+        <input
+          type="text"
+          value={disabled ? '' : value}
+          placeholder="No second team"
+          onChange={onChange}
+          disabled={isYou || disabled}
+        />
       )}
       {type === 'select' && (
         <select value={value} onChange={onChange}>

@@ -6,6 +6,7 @@ import { SubTitle } from 'components/SubTitle';
 import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
 import eventsData from './events-mock.json';
+import switchBtn from './switch-btn.png';
 
 export interface IRoster {
   assists: any;
@@ -55,7 +56,7 @@ const DesktopWindow: FC = () => {
       member2: { name: 'Selecciona a tu compañero', kills: 0 },
     },
   });
-  const [playersAmount, setPlayersAmount] = useState('two');
+  const [playersAmount, setPlayersAmount] = useState('2v2');
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
 
@@ -94,7 +95,7 @@ const DesktopWindow: FC = () => {
         typeof roster === 'object' &&
         roster.team_id === localPlayer?.team_id &&
         roster.player !== localPlayer?.player &&
-        team.length <= 4
+        team.length < 3
       ) {
         const isAlreadyInTheTeam = team?.some(
           (member) => roster.player === member.player
@@ -128,10 +129,25 @@ const DesktopWindow: FC = () => {
         ...teamsConfig.bottomTeam,
         name: 'Team' + player1.player.split('#')[0],
         member1: { name: player1.player, kills: player1.kills },
-        member2: { name: player2.player, kills: player2.kills },
+        member2: {
+          name: team.length === 3 && player2.player,
+          kills: team.length === 3 && player2.kills,
+        },
       },
     };
     setTeamsConfig(updatedTeamsConfig);
+  };
+
+  const switchMembers = (e: any) => {
+    e.preventDefault();
+    setTeamsConfig({
+      ...teamsConfig,
+      bottomTeam: {
+        ...teamsConfig.bottomTeam,
+        member1: { ...teamsConfig.bottomTeam.member2 },
+        member2: { ...teamsConfig.bottomTeam.member1 },
+      },
+    });
   };
 
   return (
@@ -142,15 +158,19 @@ const DesktopWindow: FC = () => {
         </header> */}
         <main className={style.main}>
           <form action="">
-            <SubTitle>Mode</SubTitle>
-            <div className={style.formRow}>
-              <FormInput
-                onChange={(e) => setPlayersAmount(e.target.value)}
-                value=""
-                type="radio"
-                label="one-two"
-              />
-            </div>
+            {team.length === 3 && (
+              <>
+                <SubTitle>Mode</SubTitle>
+                <div className={style.formRow}>
+                  <FormInput
+                    onChange={(e) => setPlayersAmount(e.target.value)}
+                    value=""
+                    type="radio"
+                    label="all-2v2"
+                  />
+                </div>
+              </>
+            )}
             <SubTitle>Teams</SubTitle>
 
             <div className={style.formRow}>
@@ -191,36 +211,57 @@ const DesktopWindow: FC = () => {
               />
             </div>
             {/* BOTTOM FORM */}
-            {playersAmount === 'two' && (
+            {team.length >= 2 && (
               <div className={style.formRow}>
-                <FormInput
-                  label="Bottom name"
-                  onChange={(e) =>
-                    setTeamsConfig({
-                      ...teamsConfig,
-                      bottomTeam: {
-                        ...teamsConfig.bottomTeam,
-                        name: e.target.value,
-                      },
-                    })
+                {team.length === 3 && (
+                  <FormInput
+                    label="Bottom name"
+                    onChange={(e) =>
+                      setTeamsConfig({
+                        ...teamsConfig,
+                        bottomTeam: {
+                          ...teamsConfig.bottomTeam,
+                          name: e.target.value,
+                        },
+                      })
+                    }
+                    value={teamsConfig.bottomTeam.name}
+                    type="text"
+                    disabled={playersAmount === 'all'}
+                  />
+                )}
+                <span
+                  className={
+                    teamsConfig.topTeam.member2.name
+                      ? style.membersWithSwitch + ' ' + style.withBtn
+                      : style.membersWithSwitch
                   }
-                  value={teamsConfig.bottomTeam.name}
-                  type="text"
-                />
-                <FormInput
-                  label={'Member#1'}
-                  afterIconText={teamsConfig.bottomTeam.member1.kills + ''}
-                  onChange={() => {}}
-                  value={teamsConfig.bottomTeam.member1.name.split('#')[0]}
-                  type="text"
-                />
-                <FormInput
-                  label={'Member#2'}
-                  afterIconText={teamsConfig.bottomTeam.member2.kills + ''}
-                  onChange={() => {}}
-                  value={teamsConfig.bottomTeam.member2.name.split('#')[0]}
-                  type="text"
-                />
+                >
+                  <FormInput
+                    label={team.length === 3 ? 'Member#1' : 'Member#3'}
+                    afterIconText={teamsConfig.bottomTeam.member1.kills + ''}
+                    onChange={() => {}}
+                    value={teamsConfig.bottomTeam.member1.name.split('#')[0]}
+                    type="text"
+                  />
+                  {team.length === 3 && teamsConfig.topTeam.member2.name && (
+                    <button
+                      className={style.switchBtn}
+                      onClick={(e) => switchMembers(e)}
+                    >
+                      <img src={switchBtn} alt="switch" />
+                    </button>
+                  )}
+                  {team.length >= 3 && (
+                    <FormInput
+                      label={'Member#2'}
+                      afterIconText={teamsConfig.bottomTeam.member2.kills + ''}
+                      onChange={() => {}}
+                      value={teamsConfig.bottomTeam.member2.name.split('#')[0]}
+                      type="text"
+                    />
+                  )}
+                </span>
               </div>
             )}
           </form>
@@ -229,7 +270,7 @@ const DesktopWindow: FC = () => {
           <SubTitle>Preview</SubTitle>
           <Board
             localName={localPlayer?.player}
-            hasSecond={playersAmount === 'two'}
+            hasSecond={playersAmount === '2v2' && team.length === 3}
             teamsConfig={teamsConfig}
           />
         </aside>
