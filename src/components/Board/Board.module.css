@@ -1,0 +1,20 @@
+.container {
+  width: 230px;
+  height: 70px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.24) 65.08%,
+    rgba(0, 0, 0, 0) 100%
+  );
+
+  padding: 13px 15px;
+  font-weight: bold;
+}
+
+.rowsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 170px;
+  height: 40px;
+}

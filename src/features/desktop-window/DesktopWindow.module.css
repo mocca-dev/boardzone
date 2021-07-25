@@ -1,0 +1,27 @@
+.container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 65vh 15vh;
+  grid-template-areas:
+    'main aside'
+    'footer footer';
+  color: white;
+  padding: 0 30px;
+}
+
+.main {
+  grid-area: main;
+}
+.aside {
+  /* background: green; */
+  grid-area: aside;
+}
+
+.footer {
+  background: red;
+  grid-area: footer;
+}
+
+.formRow {
+  display: flex;
+}
