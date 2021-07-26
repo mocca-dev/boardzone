@@ -1,3 +1,4 @@
+import { SkullIcon } from 'components/SkullIcon/SkullIcon';
 import React, { FC } from 'react';
 import style from './BoardRow.module.css';
 
@@ -17,7 +18,9 @@ export const BoardRow: FC<IBoardRow> = ({
       className={youName ? style.container + ' ' + style.you : style.container}
     >
       <span className={style.name}>{name}</span>
-      <span className={style.points}>{points}</span>
+      <span className={style.points}>
+        <SkullIcon isYou={!!youName} /> {points}
+      </span>
     </div>
   );
 };

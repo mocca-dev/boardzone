@@ -1,7 +1,7 @@
 import { IRoster } from 'features/desktop-window/DesktopWindow';
 import React, { FC, useEffect, useState } from 'react';
 import style from './FormInput.module.css';
-import skull from './skull.png';
+import { SkullIcon } from './SkullIcon/SkullIcon';
 interface IFormInput {
   label?: string;
   type: string;
@@ -57,7 +57,7 @@ export const FormInput: FC<IFormInput> = ({
             <span className={style.labelWithIcon}>
               <span>{label} </span>
               <span className={style.labelKills}>
-                <img src={skull} height="15px" alt="skull" />
+                <SkullIcon isYou={!!isYou} />
                 {afterIconText}
               </span>
             </span>
