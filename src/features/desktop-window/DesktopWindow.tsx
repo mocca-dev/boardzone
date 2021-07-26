@@ -60,7 +60,7 @@ const DesktopWindow: FC = () => {
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
 
-  // Process de raw data and setting the local player
+  // Process raw data and setting the local player
   useEffect(() => {
     eventsData.some((event) => {
       const rosterKey = Object.keys(event.info.match_info)[0];
@@ -108,34 +108,80 @@ const DesktopWindow: FC = () => {
     });
   }, [localPlayer, team]);
 
+  useEffect(() => {
+    console.log(team.length === 1);
+
+    if (team.length === 1) {
+      setTeamsConfig({
+        ...teamsConfig,
+        topTeam: {
+          ...teamsConfig.topTeam,
+          member2: { name: team[0].player, kills: team[0].kills },
+        },
+      });
+    } else if (team.length === 2) {
+      setTeamsConfig({
+        ...teamsConfig,
+        topTeam: {
+          ...teamsConfig.topTeam,
+          member2: { name: team[0].player, kills: team[0].kills },
+        },
+        bottomTeam: {
+          ...teamsConfig.bottomTeam,
+          member1: { name: team[1].player, kills: team[1].kills },
+        },
+      });
+    } else if (team.length === 3) {
+      setTeamsConfig({
+        ...teamsConfig,
+        topTeam: {
+          ...teamsConfig.topTeam,
+          member2: { name: team[0].player, kills: team[0].kills },
+        },
+        bottomTeam: {
+          ...teamsConfig.bottomTeam,
+          name: 'Team' + team[1].player.split('#')[0],
+          member1: { name: team[1].player, kills: team[1].kills },
+          member2: { name: team[2].player, kills: team[2].kills },
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [team]);
+
   const fillRemainingMemebers = (partner?: IRoster): void => {
-    const remainingMemebers = team.filter(
-      (member) => !member.player.includes(partner?.player)
-    );
+    if (team.length >= 2) {
+      const remainingMemebers = team.filter(
+        (member) => !member.player.includes(partner?.player)
+      );
 
-    const player1 = remainingMemebers[0];
-    const player2 = remainingMemebers[1];
+      const player1 = remainingMemebers[0];
+      const player2 = remainingMemebers[1];
 
-    const updatedTeamsConfig = {
-      ...teamsConfig,
-      topTeam: {
-        ...teamsConfig.topTeam,
-        member2: {
-          name: partner?.player,
-          kills: partner?.kills,
+      const updatedTeamsConfig = {
+        ...teamsConfig,
+        topTeam: {
+          ...teamsConfig.topTeam,
+          member2: {
+            name: partner?.player,
+            kills: partner?.kills,
+          },
         },
-      },
-      bottomTeam: {
-        ...teamsConfig.bottomTeam,
-        name: 'Team' + player1.player.split('#')[0],
-        member1: { name: player1.player, kills: player1.kills },
-        member2: {
-          name: team.length === 3 && player2.player,
-          kills: team.length === 3 && player2.kills,
+        bottomTeam: {
+          ...teamsConfig.bottomTeam,
+          name: 'Team' + player1.player.split('#')[0],
+          member1: {
+            name: player1.player,
+            kills: player1.kills,
+          },
+          member2: {
+            name: team.length === 3 && player2.player,
+            kills: team.length === 3 && player2.kills,
+          },
         },
-      },
-    };
-    setTeamsConfig(updatedTeamsConfig);
+      };
+      setTeamsConfig(updatedTeamsConfig);
+    }
   };
 
   const switchMembers = (e: any) => {
@@ -144,6 +190,7 @@ const DesktopWindow: FC = () => {
       ...teamsConfig,
       bottomTeam: {
         ...teamsConfig.bottomTeam,
+        name: 'Team' + teamsConfig.bottomTeam.member2.name.split('#')[0],
         member1: { ...teamsConfig.bottomTeam.member2 },
         member2: { ...teamsConfig.bottomTeam.member1 },
       },
@@ -196,19 +243,29 @@ const DesktopWindow: FC = () => {
                 value={localPlayer ? localPlayer?.player.split('#')[0] : ''}
                 type="text"
               />
-              <FormInput
-                label={'Member#2'}
-                afterIconText={teamsConfig.topTeam.member2.kills + ''}
-                options={team}
-                onChange={(e) => {
-                  const selectedMember = team.find((member) =>
-                    member.player.includes(e.target.value)
-                  );
-                  if (selectedMember) fillRemainingMemebers(selectedMember);
-                }}
-                value={teamsConfig.topTeam.member2.name.split('#')[0]}
-                type="select"
-              />
+              {team.length === 1 || team.length === 2 ? (
+                <FormInput
+                  label={'Member#2'}
+                  afterIconText={teamsConfig.topTeam.member2.kills + ''}
+                  onChange={() => {}}
+                  value={teamsConfig.topTeam.member2.name.split('#')[0]}
+                  type="text"
+                />
+              ) : (
+                <FormInput
+                  label={'Member#2'}
+                  afterIconText={teamsConfig.topTeam.member2.kills + ''}
+                  options={team}
+                  onChange={(e) => {
+                    const selectedMember = team.find((member) =>
+                      member.player.includes(e.target.value)
+                    );
+                    if (selectedMember) fillRemainingMemebers(selectedMember);
+                  }}
+                  value={teamsConfig.topTeam.member2.name.split('#')[0]}
+                  type="select"
+                />
+              )}
             </div>
             {/* BOTTOM FORM */}
             {team.length >= 2 && (

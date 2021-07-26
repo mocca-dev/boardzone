@@ -30,7 +30,8 @@
   align-items: flex-end;
 }
 
-.membersWithSwitch.withBtn label:first-child input {
+.membersWithSwitch.withBtn label:first-child input,
+.membersWithSwitch.withBtn label:first-child div {
   margin-right: 5px;
 }
 

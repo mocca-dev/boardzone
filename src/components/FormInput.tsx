@@ -48,7 +48,9 @@ export const FormInput: FC<IFormInput> = ({
       {type !== 'radio' && (
         <div
           className={
-            isYou ? style.inputLabel + ' ' + style.isYou : style.inputLabel
+            isYou
+              ? style.inputLabel + ' .input-label ' + style.isYou
+              : style.inputLabel + ' .input-label'
           }
         >
           {label && afterIconText ? (
@@ -75,7 +77,7 @@ export const FormInput: FC<IFormInput> = ({
       )}
       {type === 'select' && (
         <select value={value} onChange={onChange}>
-          <option defaultValue="true">Selecciona un jugador...</option>
+          <option defaultValue="true">Selecciona un compañero...</option>
           {mappedOptions?.map((option) => (
             <option key={option.player} value={option.player}>
               {option.player}
