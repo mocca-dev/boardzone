@@ -7,9 +7,15 @@ interface IBoard {
   hasSecond: boolean;
   teamsConfig: ITeamsConfig;
   localName: string;
+  showDifference: boolean;
 }
 
-export const Board: FC<IBoard> = ({ hasSecond, teamsConfig, localName }) => {
+export const Board: FC<IBoard> = ({
+  hasSecond,
+  teamsConfig,
+  localName,
+  showDifference,
+}) => {
   const [topTotal, setTopTotal] = useState(0);
   const [bottomTotal, setBottomTotal] = useState(0);
   const [difference, setDifference] = useState(0);
@@ -49,7 +55,7 @@ export const Board: FC<IBoard> = ({ hasSecond, teamsConfig, localName }) => {
           <BoardRow name={teamsConfig.bottomTeam?.name} points={bottomTotal} />
         )}
       </div>
-      {hasSecond && (
+      {hasSecond && showDifference && (
         <span
           className={
             difference > 0

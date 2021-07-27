@@ -57,6 +57,7 @@ const DesktopWindow: FC = () => {
     },
   });
   const [playersAmount, setPlayersAmount] = useState('2v2');
+  const [showDifference, setShowDifference] = useState('1');
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
 
@@ -205,15 +206,30 @@ const DesktopWindow: FC = () => {
           <form action="">
             {team.length === 3 && (
               <>
-                <SubTitle>{t('components.desktop.mode')}</SubTitle>
-                <div className={style.formRow}>
-                  <FormInput
-                    onChange={(e) => setPlayersAmount(e.target.value)}
-                    value=""
-                    type="radio"
-                    label={`${t('components.desktop.all')}-2v2`}
-                  />
-                </div>
+                <span>
+                  <SubTitle>{t('components.desktop.mode')}</SubTitle>
+                  <div className={style.formRow}>
+                    <FormInput
+                      onChange={(e) => setPlayersAmount(e.target.value)}
+                      value=""
+                      type="radio"
+                      label={`${t('components.desktop.all')}-2v2`}
+                    />
+                  </div>
+                </span>
+                <span>
+                  <SubTitle>{t('components.desktop.difference')}</SubTitle>
+                  <div className={style.formRow}>
+                    <FormInput
+                      onChange={(e) => setShowDifference(e.target.value)}
+                      value=""
+                      type="radio"
+                      label={`${t('components.desktop.no')}-${t(
+                        'components.desktop.yes'
+                      )}`}
+                    />
+                  </div>
+                </span>
               </>
             )}
             <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
@@ -331,6 +347,7 @@ const DesktopWindow: FC = () => {
             localName={localPlayer?.player}
             hasSecond={playersAmount === '2v2' && team.length === 3}
             teamsConfig={teamsConfig}
+            showDifference={showDifference === '1'}
           />
         </aside>
         {/* <footer className={style.footer}>

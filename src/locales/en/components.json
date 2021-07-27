@@ -11,7 +11,10 @@
       "player4": "Player#4",
       "preview": "Preview",
       "mode": "Mode",
-      "all": "all"
+      "all": "all",
+      "difference": "Difference Indicator",
+      "yes": "1",
+      "no": "0"
     }
   }
 }

@@ -11,7 +11,10 @@
       "player4": "Jugador#4",
       "preview": "Vista Previa",
       "mode": "Modo",
-      "all": "todo"
+      "all": "todo",
+      "difference": "Indicador de Diferencia",
+      "yes": "1",
+      "no": "0"
     }
   }
 }
