@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { DesktopHeader } from './DesktopHeader';
 import style from './DesktopWindow.module.css';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { SubTitle } from 'components/SubTitle';
 import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
@@ -43,7 +43,7 @@ export interface ITeamsConfig {
 const getKeyValue = (key: string) => (obj: Record<string, any>) => obj[key];
 
 const DesktopWindow: FC = () => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [teamsConfig, setTeamsConfig] = useState<ITeamsConfig>({
     topTeam: {
       name: 'TopTeam',
@@ -109,8 +109,6 @@ const DesktopWindow: FC = () => {
   }, [localPlayer, team]);
 
   useEffect(() => {
-    console.log(team.length === 1);
-
     if (team.length === 1) {
       setTeamsConfig({
         ...teamsConfig,
@@ -207,22 +205,22 @@ const DesktopWindow: FC = () => {
           <form action="">
             {team.length === 3 && (
               <>
-                <SubTitle>Mode</SubTitle>
+                <SubTitle>{t('components.desktop.mode')}</SubTitle>
                 <div className={style.formRow}>
                   <FormInput
                     onChange={(e) => setPlayersAmount(e.target.value)}
                     value=""
                     type="radio"
-                    label="all-2v2"
+                    label={`${t('components.desktop.all')}-2v2`}
                   />
                 </div>
               </>
             )}
-            <SubTitle>Teams</SubTitle>
+            <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
 
             <div className={style.formRow}>
               <FormInput
-                label="Top name"
+                label={t('components.desktop.topTeamName')}
                 onChange={(e) =>
                   setTeamsConfig({
                     ...teamsConfig,
@@ -236,7 +234,7 @@ const DesktopWindow: FC = () => {
                 type="text"
               />
               <FormInput
-                label={'You'}
+                label={t('components.desktop.youLabel')}
                 afterIconText={teamsConfig.topTeam.member1.kills + ''}
                 isYou={true}
                 onChange={() => {}}
@@ -245,7 +243,7 @@ const DesktopWindow: FC = () => {
               />
               {team.length === 1 || team.length === 2 ? (
                 <FormInput
-                  label={'Member#2'}
+                  label={t('components.desktop.player2')}
                   afterIconText={teamsConfig.topTeam.member2.kills + ''}
                   onChange={() => {}}
                   value={teamsConfig.topTeam.member2.name.split('#')[0]}
@@ -253,7 +251,7 @@ const DesktopWindow: FC = () => {
                 />
               ) : (
                 <FormInput
-                  label={'Member#2'}
+                  label={t('components.desktop.player2')}
                   afterIconText={teamsConfig.topTeam.member2.kills + ''}
                   options={team}
                   onChange={(e) => {
@@ -272,7 +270,7 @@ const DesktopWindow: FC = () => {
               <div className={style.formRow}>
                 {team.length === 3 && (
                   <FormInput
-                    label="Bottom name"
+                    label={t('components.desktop.bottomTeamName')}
                     onChange={(e) =>
                       setTeamsConfig({
                         ...teamsConfig,
@@ -295,7 +293,11 @@ const DesktopWindow: FC = () => {
                   }
                 >
                   <FormInput
-                    label={team.length === 3 ? 'Member#1' : 'Member#3'}
+                    label={
+                      team.length === 3
+                        ? t('components.desktop.player1')
+                        : t('components.desktop.player3')
+                    }
                     afterIconText={teamsConfig.bottomTeam.member1.kills + ''}
                     onChange={() => {}}
                     value={teamsConfig.bottomTeam.member1.name.split('#')[0]}
@@ -311,7 +313,7 @@ const DesktopWindow: FC = () => {
                   )}
                   {team.length >= 3 && (
                     <FormInput
-                      label={'Member#2'}
+                      label={t('components.desktop.player2')}
                       afterIconText={teamsConfig.bottomTeam.member2.kills + ''}
                       onChange={() => {}}
                       value={teamsConfig.bottomTeam.member2.name.split('#')[0]}
@@ -324,7 +326,7 @@ const DesktopWindow: FC = () => {
           </form>
         </main>
         <aside className={style.aside}>
-          <SubTitle>Preview</SubTitle>
+          <SubTitle>{t('components.desktop.preview')}</SubTitle>
           <Board
             localName={localPlayer?.player}
             hasSecond={playersAmount === '2v2' && team.length === 3}

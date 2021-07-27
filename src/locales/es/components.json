@@ -1,10 +1,17 @@
 {
   "components": {
     "desktop": {
-      "header": "Spanish-Header-Text",
-      "main": "Spanish-Main-Text",
-      "aside": "Spanish-Aside-Text",
-      "footer": "Spanish-Footer-Text"
+      "teamsHeader": "Equipos",
+      "topTeamName": "Nombre Arriba",
+      "bottomTeamName": "Nombre Abajo",
+      "youLabel": "Tú",
+      "player1": "Jugador#1",
+      "player2": "Jugador#2",
+      "player3": "Jugador#3",
+      "player4": "Jugador#4",
+      "preview": "Vista Previa",
+      "mode": "Modo",
+      "all": "todo"
     }
   }
 }

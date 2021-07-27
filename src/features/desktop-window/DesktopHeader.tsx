@@ -1,11 +1,25 @@
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { WINDOW_NAMES } from 'app/constants';
 import { useWindow, useDrag } from 'overwolf-hooks';
+import { useTranslation } from 'react-i18next';
 import { SVGComponent } from './DesktopHeaderSVG';
 import style from './DesktopHeader.module.css';
 
+const lngs: any = {
+  en: { nativeName: 'English' },
+  es: { nativeName: 'Español' },
+};
 const { DESKTOP, BACKGROUND } = WINDOW_NAMES;
+
+const langBtnClass = (style: any, lng: string, i18n: any): string => {
+  let langClass: string = style.langBtn;
+  lng === 'en' ? (langClass += ' ' + style.en) : (langClass += ' ' + style.es);
+  if (i18n.language === lng) langClass += ' ' + style.langSelected;
+  return langClass;
+};
+
 export const DesktopHeader: FC = () => {
+  const { i18n } = useTranslation();
   const [maximized, setMaximize] = useState(false);
   const [desktopWindow] = useWindow(DESKTOP);
   const [backgroundWindow] = useWindow(BACKGROUND);
@@ -38,6 +52,16 @@ export const DesktopHeader: FC = () => {
         <h3 className={style['header-title']}>BZ</h3>{' '}
         <span>In Game board settings</span>
         <div className={style['window-controls-group']}>
+          <div className={style.langContainer}>
+            {Object.keys(lngs).map((lng) => (
+              <button
+                key={lng}
+                className={langBtnClass(style, lng, i18n)}
+                type="button"
+                onClick={() => i18n.changeLanguage(lng)}
+              ></button>
+            ))}
+          </div>
           <button
             className={`${style.icon} ${style['window-control']} ${style['window-control-social']} ${style.discord} `}
             onClick={() =>

@@ -1,4 +1,6 @@
 .container {
+  display: flex;
+  align-items: center;
   width: 230px;
   height: 70px;
   background: linear-gradient(
@@ -6,7 +8,6 @@
     rgba(0, 0, 0, 0.24) 65.08%,
     rgba(0, 0, 0, 0) 100%
   );
-
   padding: 13px 15px;
   font-weight: bold;
 }
@@ -17,4 +18,41 @@
   justify-content: center;
   width: 170px;
   height: 40px;
+}
+
+.container .difference {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  -webkit-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+
+.container .difference .arrow {
+  height: 10px;
+  margin-left: 3px;
+  filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
+    brightness(90%) contrast(119%);
+  -webkit-transition: all 0.25s linear;
+  transition: all 0.25s linear;
+}
+
+.container .difference.low {
+  color: red;
+}
+
+.container .difference .arrow.low {
+  filter: invert(21%) sepia(92%) saturate(6955%) hue-rotate(357deg)
+    brightness(100%) contrast(115%);
+}
+
+.container .difference.high {
+  color: #4e8dff;
+}
+
+.container .difference .arrow.high {
+  transform: rotate(180deg);
+
+  filter: invert(74%) sepia(64%) saturate(6437%) hue-rotate(200deg)
+    brightness(101%) contrast(102%);
 }

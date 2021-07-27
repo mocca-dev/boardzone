@@ -1,10 +1,17 @@
 {
   "components": {
     "desktop": {
-      "header": "English-Header-Text",
-      "main": "English-Main-Text",
-      "aside": "English-Aside-Text",
-      "footer": "English-Footer-Text"
+      "teamsHeader": "Teams",
+      "topTeamName": "Top Name",
+      "bottomTeamName": "Bottom Name",
+      "youLabel": "You",
+      "player1": "Player#1",
+      "player2": "Player#2",
+      "player3": "Player#3",
+      "player4": "Player#4",
+      "preview": "Preview",
+      "mode": "Mode",
+      "all": "all"
     }
   }
 }
