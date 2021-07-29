@@ -10,12 +10,13 @@
       "player3": "Jugador#3",
       "player4": "Jugador#4",
       "preview": "Vista Previa",
-      "mode": "Modo",
+      "mode": "2v2",
       "all": "todo",
-      "difference": "Indicador de Diferencia",
+      "difference": "Diferencia",
       "yes": "1",
       "no": "0",
-      "prevMatchPoints": "Partida Previa"
+      "prevMatchPoints": "Partida Previa",
+      "showPrevMatchPoints": "Puntos Previos"
     }
   }
 }

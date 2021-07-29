@@ -49,3 +49,12 @@
   filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
     brightness(90%) contrast(119%);
 }
+
+.inputsContainer {
+  display: flex;
+}
+
+.inputsContainer span {
+  width: 170px;
+  margin-right: 32px;
+}

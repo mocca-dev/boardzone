@@ -59,8 +59,9 @@ const DesktopWindow: FC = () => {
       previousMatchPoints: 0,
     },
   });
-  const [playersAmount, setPlayersAmount] = useState('2v2');
-  const [showDifference, setShowDifference] = useState('1');
+  const [playersAmount, setPlayersAmount] = useState(true);
+  const [showDifference, setShowDifference] = useState(true);
+  const [showPrevPoints, setShowPrevPoints] = useState(true);
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
 
@@ -207,34 +208,6 @@ const DesktopWindow: FC = () => {
         </header> */}
         <main className={style.main}>
           <form action="">
-            {team.length === 3 && (
-              <>
-                <span>
-                  <SubTitle>{t('components.desktop.mode')}</SubTitle>
-                  <div className={style.formRow}>
-                    <FormInput
-                      onChange={(e) => setPlayersAmount(e.target.value)}
-                      value=""
-                      type="radio"
-                      label={`${t('components.desktop.all')}-2v2`}
-                    />
-                  </div>
-                </span>
-                <span>
-                  <SubTitle>{t('components.desktop.difference')}</SubTitle>
-                  <div className={style.formRow}>
-                    <FormInput
-                      onChange={(e) => setShowDifference(e.target.value)}
-                      value=""
-                      type="radio"
-                      label={`${t('components.desktop.no')}-${t(
-                        'components.desktop.yes'
-                      )}`}
-                    />
-                  </div>
-                </span>
-              </>
-            )}
             <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
 
             <div className={style.formRow}>
@@ -283,7 +256,7 @@ const DesktopWindow: FC = () => {
                     value={teamsConfig.topTeam.member2.name.split('#')[0]}
                     type="select"
                   />
-                  {playersAmount === '2v2' && (
+                  {playersAmount && (
                     <FormInput
                       label={t('components.desktop.prevMatchPoints')}
                       onChange={(e) => {
@@ -321,7 +294,7 @@ const DesktopWindow: FC = () => {
                     }
                     value={teamsConfig.bottomTeam.name}
                     type="text"
-                    disabled={playersAmount === 'all'}
+                    disabled={!playersAmount}
                   />
                 )}
                 <span
@@ -363,7 +336,7 @@ const DesktopWindow: FC = () => {
                         }
                         type="text"
                       />
-                      {playersAmount === '2v2' && (
+                      {playersAmount && (
                         <FormInput
                           label={t('components.desktop.prevMatchPoints')}
                           onChange={(e) => {
@@ -386,15 +359,50 @@ const DesktopWindow: FC = () => {
                 </span>
               </div>
             )}
+            {team.length === 3 && (
+              <span className={style.inputsContainer}>
+                <span>
+                  <div className={style.formRow}>
+                    <FormInput
+                      onChange={() => setPlayersAmount(!playersAmount)}
+                      value={playersAmount}
+                      type="checkbox"
+                      label={t('components.desktop.mode')}
+                    />
+                  </div>
+                </span>
+                <span>
+                  <div className={style.formRow}>
+                    <FormInput
+                      onChange={() => setShowDifference(!showDifference)}
+                      value={showDifference}
+                      type="checkbox"
+                      label={t('components.desktop.difference')}
+                    />
+                  </div>
+                </span>
+                <span>
+                  <div className={style.formRow}>
+                    <FormInput
+                      onChange={() => setShowPrevPoints(!showPrevPoints)}
+                      value={showPrevPoints}
+                      type="checkbox"
+                      label={t('components.desktop.showPrevMatchPoints')}
+                    />
+                  </div>
+                </span>
+              </span>
+            )}
           </form>
         </main>
         <aside className={style.aside}>
           <SubTitle>{t('components.desktop.preview')}</SubTitle>
           <Board
             localName={localPlayer?.player}
-            hasSecond={playersAmount === '2v2' && team.length === 3}
+            hasSecond={playersAmount && team.length === 3}
             teamsConfig={teamsConfig}
-            showDifference={showDifference === '1'}
+            showDifference={showDifference}
+            showPrevPoints={!!showPrevPoints}
           />
         </aside>
         {/* <footer className={style.footer}>

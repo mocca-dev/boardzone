@@ -21,7 +21,9 @@ export const BoardRow: FC<IBoardRow> = ({
       className={youName ? style.container + ' ' + style.you : style.container}
     >
       <span className={style.name}>{name}</span>
-      {hasSecond && <span className={style.previousPoints}>{prevMatch}</span>}
+      {hasSecond && prevMatch >= 0 && (
+        <span className={style.previousPoints}>{prevMatch}</span>
+      )}
       <span className={style.points}>{points}</span>
     </div>
   );

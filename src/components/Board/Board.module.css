@@ -46,6 +46,10 @@
     brightness(100%) contrast(115%);
 }
 
+.container .difference.mid {
+  color: white;
+}
+
 .container .difference.high {
   color: #4e8dff;
 }

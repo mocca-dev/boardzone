@@ -10,12 +10,13 @@
       "player3": "Player#3",
       "player4": "Player#4",
       "preview": "Preview",
-      "mode": "Mode",
+      "mode": "2v2",
       "all": "all",
-      "difference": "Difference Indicator",
+      "difference": "Difference",
       "yes": "1",
       "no": "0",
-      "prevMatchPoints": "Previous Match"
+      "prevMatchPoints": "Previous Match",
+      "showPrevMatchPoints": "Previous Points"
     }
   }
 }
