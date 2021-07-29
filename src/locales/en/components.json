@@ -14,7 +14,8 @@
       "all": "all",
       "difference": "Difference Indicator",
       "yes": "1",
-      "no": "0"
+      "no": "0",
+      "prevMatchPoints": "Previous Match"
     }
   }
 }

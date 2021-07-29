@@ -34,6 +34,7 @@ interface ITeamConfig {
   name: string;
   member1: ITeamMemberConfig;
   member2: ITeamMemberConfig;
+  previousMatchPoints: number;
 }
 export interface ITeamsConfig {
   topTeam: ITeamConfig;
@@ -49,11 +50,13 @@ const DesktopWindow: FC = () => {
       name: 'TopTeam',
       member1: { name: '', kills: 0 },
       member2: { name: '', kills: 0 },
+      previousMatchPoints: 0,
     },
     bottomTeam: {
       name: 'BottomTeam',
       member1: { name: 'Selecciona a tu compañero', kills: 0 },
       member2: { name: 'Selecciona a tu compañero', kills: 0 },
+      previousMatchPoints: 0,
     },
   });
   const [playersAmount, setPlayersAmount] = useState('2v2');
@@ -266,19 +269,39 @@ const DesktopWindow: FC = () => {
                   type="text"
                 />
               ) : (
-                <FormInput
-                  label={t('components.desktop.player2')}
-                  afterIconText={teamsConfig.topTeam.member2.kills + ''}
-                  options={team}
-                  onChange={(e) => {
-                    const selectedMember = team.find((member) =>
-                      member.player.includes(e.target.value)
-                    );
-                    if (selectedMember) fillRemainingMemebers(selectedMember);
-                  }}
-                  value={teamsConfig.topTeam.member2.name.split('#')[0]}
-                  type="select"
-                />
+                <>
+                  <FormInput
+                    label={t('components.desktop.player2')}
+                    afterIconText={teamsConfig.topTeam.member2.kills + ''}
+                    options={team}
+                    onChange={(e) => {
+                      const selectedMember = team.find((member) =>
+                        member.player.includes(e.target.value)
+                      );
+                      if (selectedMember) fillRemainingMemebers(selectedMember);
+                    }}
+                    value={teamsConfig.topTeam.member2.name.split('#')[0]}
+                    type="select"
+                  />
+                  {playersAmount === '2v2' && (
+                    <FormInput
+                      label={t('components.desktop.prevMatchPoints')}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        setTeamsConfig({
+                          ...teamsConfig,
+                          topTeam: {
+                            ...teamsConfig.topTeam,
+                            previousMatchPoints:
+                              value === '' ? 0 : parseInt(value),
+                          },
+                        });
+                      }}
+                      value={teamsConfig.topTeam.previousMatchPoints}
+                      type="text"
+                    />
+                  )}
+                </>
               )}
             </div>
             {/* BOTTOM FORM */}
@@ -328,13 +351,37 @@ const DesktopWindow: FC = () => {
                     </button>
                   )}
                   {team.length >= 3 && (
-                    <FormInput
-                      label={t('components.desktop.player2')}
-                      afterIconText={teamsConfig.bottomTeam.member2.kills + ''}
-                      onChange={() => {}}
-                      value={teamsConfig.bottomTeam.member2.name.split('#')[0]}
-                      type="text"
-                    />
+                    <>
+                      <FormInput
+                        label={t('components.desktop.player2')}
+                        afterIconText={
+                          teamsConfig.bottomTeam.member2.kills + ''
+                        }
+                        onChange={() => {}}
+                        value={
+                          teamsConfig.bottomTeam.member2.name.split('#')[0]
+                        }
+                        type="text"
+                      />
+                      {playersAmount === '2v2' && (
+                        <FormInput
+                          label={t('components.desktop.prevMatchPoints')}
+                          onChange={(e) => {
+                            const { value } = e.target;
+                            setTeamsConfig({
+                              ...teamsConfig,
+                              bottomTeam: {
+                                ...teamsConfig.bottomTeam,
+                                previousMatchPoints:
+                                  value === '' ? 0 : parseInt(value),
+                              },
+                            });
+                          }}
+                          value={teamsConfig.bottomTeam.previousMatchPoints}
+                          type="text"
+                        />
+                      )}
+                    </>
                   )}
                 </span>
               </div>

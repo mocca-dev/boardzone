@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -17,11 +17,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 85px;
-  margin-right: 15px;
+  margin-right: auto;
 }
 
+.previousPoints,
 .points {
   display: flex;
   align-items: center;
   margin-right: 15px;
+}
+
+.previousPoints {
+  opacity: 0.5;
 }

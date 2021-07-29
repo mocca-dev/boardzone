@@ -40,8 +40,13 @@ export const Board: FC<IBoard> = ({
   }, [hasSecond, teamsConfig]);
 
   useEffect(() => {
-    hasSecond && setDifference(topTotal - bottomTotal);
-  }, [topTotal, bottomTotal, hasSecond]);
+    hasSecond &&
+      setDifference(
+        topTotal +
+          teamsConfig.topTeam.previousMatchPoints -
+          (bottomTotal + teamsConfig.bottomTeam.previousMatchPoints)
+      );
+  }, [topTotal, bottomTotal, hasSecond, teamsConfig]);
 
   return (
     <div className={style.container}>
@@ -49,10 +54,17 @@ export const Board: FC<IBoard> = ({
         <BoardRow
           name={teamsConfig.topTeam.name}
           points={topTotal}
+          prevMatch={teamsConfig.topTeam.previousMatchPoints}
           youName={hasSecond && localName === teamsConfig.topTeam.member1.name}
+          hasSecond={hasSecond}
         />
         {hasSecond && (
-          <BoardRow name={teamsConfig.bottomTeam?.name} points={bottomTotal} />
+          <BoardRow
+            name={teamsConfig.bottomTeam?.name}
+            points={bottomTotal}
+            prevMatch={teamsConfig.bottomTeam.previousMatchPoints}
+            hasSecond={true}
+          />
         )}
       </div>
       {hasSecond && showDifference && (
