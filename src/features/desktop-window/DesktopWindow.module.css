@@ -9,6 +9,15 @@
   padding: 0 30px;
 }
 
+@media (max-width: 1000px) {
+  .container {
+    grid-template-rows: 17vh 30vh;
+    grid-template-areas:
+      'aside aside'
+      'main main';
+  }
+}
+
 .main {
   grid-area: main;
 }
