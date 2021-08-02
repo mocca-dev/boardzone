@@ -62,7 +62,7 @@ export const DesktopHeader: FC = () => {
               ></button>
             ))}
           </div>
-          <button
+          {/* <button
             className={`${style.icon} ${style['window-control']} ${style['window-control-social']} ${style.discord} `}
             onClick={() =>
               overwolf.utils.openUrlInDefaultBrowser('https://discord.gg/')
@@ -84,7 +84,7 @@ export const DesktopHeader: FC = () => {
             <svg>
               <use xlinkHref="#window-control_support" />
             </svg>
-          </button>
+          </button> */}
           <button
             className={`${style.icon} ${style['window-control']}`}
             onClick={() => desktopWindow?.minimize()}
