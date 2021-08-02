@@ -42,6 +42,14 @@ export interface ITeamsConfig {
 }
 
 const getKeyValue = (key: string) => (obj: Record<string, any>) => obj[key];
+const validateNumberInput = (number: string): number => {
+  const num = parseInt(number);
+  if (num <= 99) {
+    return num;
+  } else {
+    return 99;
+  }
+};
 
 const DesktopWindow: FC = () => {
   const { t } = useTranslation();
@@ -266,10 +274,11 @@ const DesktopWindow: FC = () => {
                           topTeam: {
                             ...teamsConfig.topTeam,
                             previousMatchPoints:
-                              value === '' ? 0 : parseInt(value),
+                              value === '' ? 0 : validateNumberInput(value),
                           },
                         });
                       }}
+                      small={true}
                       value={teamsConfig.topTeam.previousMatchPoints}
                       type="text"
                     />
@@ -346,10 +355,11 @@ const DesktopWindow: FC = () => {
                               bottomTeam: {
                                 ...teamsConfig.bottomTeam,
                                 previousMatchPoints:
-                                  value === '' ? 0 : parseInt(value),
+                                  value === '' ? 0 : validateNumberInput(value),
                               },
                             });
                           }}
+                          small={true}
                           value={teamsConfig.bottomTeam.previousMatchPoints}
                           type="text"
                         />

@@ -10,6 +10,7 @@ interface IFormInput {
   options?: IRoster[];
   afterIconText?: string;
   disabled?: boolean;
+  small?: boolean;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -24,6 +25,7 @@ export const FormInput: FC<IFormInput> = ({
   options,
   afterIconText,
   disabled,
+  small,
 }) => {
   const [mappedOptions, setMappedOptions] = useState<IRoster[] | undefined>([]);
 
@@ -62,6 +64,7 @@ export const FormInput: FC<IFormInput> = ({
       {type === 'text' && (
         <input
           type="text"
+          className={small ? style.small : ''}
           value={disabled ? '' : value}
           placeholder="No second team"
           onChange={onChange}
@@ -88,7 +91,7 @@ export const FormInput: FC<IFormInput> = ({
             onChange={onChange}
           />
           <span className={style.checkmark}></span>
-          <span>{label}</span>
+          <span className={style.checkboxLabel}>{label}</span>
         </label>
       )}
     </label>

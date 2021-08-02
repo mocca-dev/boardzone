@@ -143,6 +143,11 @@ input[type='radio']:checked ~ label {
   background-color: #daea4c;
 }
 
+input[type='text'].small {
+  width: 100px;
+  text-align: center;
+}
+
 /* Customize the label (the container) */
 .container {
   display: block;
@@ -211,4 +216,10 @@ input[type='radio']:checked ~ label {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.container .checkboxLabel {
+  display: flex;
+  height: 25px;
+  align-items: center;
 }
