@@ -65,9 +65,10 @@
         "file": "./Files/index.html",
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
-        "block_top_window_navigation": true,
+        "focus_game_takeover_release_hotkey": "showhide",
         "transparent": true,
         "resizable": true,
+        "override_on_update": true,
         "size": {
           "width": 250,
           "height": 340

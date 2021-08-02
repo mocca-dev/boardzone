@@ -11,7 +11,7 @@
 
 @media (max-width: 1000px) {
   .container {
-    grid-template-rows: 17vh 30vh;
+    grid-template-rows: 1fr 230px;
     grid-template-areas:
       'aside aside'
       'main main';
