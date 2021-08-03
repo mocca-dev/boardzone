@@ -16,7 +16,8 @@
       "yes": "1",
       "no": "0",
       "prevMatchPoints": "Partida Previa",
-      "showPrevMatchPoints": "Puntos Previos"
+      "showPrevMatchPoints": "Puntos Previos",
+      "type": "Tipo de equipo"
     }
   }
 }

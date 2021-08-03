@@ -28,6 +28,13 @@ export const FormInput: FC<IFormInput> = ({
   small,
 }) => {
   const [mappedOptions, setMappedOptions] = useState<IRoster[] | undefined>([]);
+  const [radioLables, setRadioLabels] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (type === 'radio' && label) {
+      setRadioLabels(label.split('-'));
+    }
+  }, [label, type]);
 
   useEffect(() => {
     setMappedOptions(
@@ -40,7 +47,7 @@ export const FormInput: FC<IFormInput> = ({
 
   return (
     <label className={style.inputContainer}>
-      {type !== 'checkbox' && (
+      {type !== 'checkbox' && type !== 'radio' && (
         <div
           className={
             isYou
@@ -93,6 +100,24 @@ export const FormInput: FC<IFormInput> = ({
           <span className={style.checkmark}></span>
           <span className={style.checkboxLabel}>{label}</span>
         </label>
+      )}
+      {type === 'radio' && (
+        <ul>
+          {radioLables.map((radio) => (
+            <li key={radio}>
+              <input
+                type="radio"
+                id={radio}
+                name={label}
+                value={radio}
+                onChange={onChange}
+                defaultChecked={radioLables[0] === radio}
+              />
+              <label htmlFor={radio}>{radio}</label>
+              <div className="check"></div>
+            </li>
+          ))}
+        </ul>
       )}
     </label>
   );

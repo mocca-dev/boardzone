@@ -16,7 +16,8 @@
       "yes": "1",
       "no": "0",
       "prevMatchPoints": "Previous Match",
-      "showPrevMatchPoints": "Previous Points"
+      "showPrevMatchPoints": "Previous Points",
+      "type": "Team Type"
     }
   }
 }
