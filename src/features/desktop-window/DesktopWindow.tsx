@@ -51,6 +51,26 @@ const validateNumberInput = (number: string): number => {
   }
 };
 
+const setSelectedTeamType = (
+  value: string,
+  setTeamType: Function,
+  t: any
+): void => {
+  switch (value) {
+    case t('components.desktop.duo'):
+      setTeamType(2);
+      break;
+    case t('components.desktop.trio'):
+      setTeamType(3);
+      break;
+    case t('components.desktop.squad'):
+      setTeamType(4);
+      break;
+    default:
+      setTeamType(0);
+  }
+};
+
 const DesktopWindow: FC = () => {
   const { t } = useTranslation();
   const [teamsConfig, setTeamsConfig] = useState<ITeamsConfig>({
@@ -221,26 +241,14 @@ const DesktopWindow: FC = () => {
               <SubTitle>{t('components.desktop.type')}</SubTitle>
               <div className={style.formRow}>
                 <FormInput
-                  onChange={(e) => {
-                    const { value } = e.target;
-
-                    switch (value) {
-                      case 'Duo':
-                        setTeamType(2);
-                        break;
-                      case 'Trio':
-                        setTeamType(3);
-                        break;
-                      case 'Cuarteto':
-                        setTeamType(4);
-                        break;
-                      default:
-                        setTeamType(0);
-                    }
-                  }}
+                  onChange={(e) =>
+                    setSelectedTeamType(e.target.value, setTeamType, t)
+                  }
                   value=""
                   type="radio"
-                  label={'Duo-Trio-Cuarteto'}
+                  label={`${t('components.desktop.duo')}-${t(
+                    'components.desktop.trio'
+                  )}-${t('components.desktop.squad')}`}
                 />
               </div>
             </span>

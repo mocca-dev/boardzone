@@ -17,7 +17,10 @@
       "no": "0",
       "prevMatchPoints": "Previous Match",
       "showPrevMatchPoints": "Previous Points",
-      "type": "Team Type"
+      "type": "Team Type",
+      "duo": "Duo",
+      "trio": "Trio",
+      "squad": "Squad"
     }
   }
 }
