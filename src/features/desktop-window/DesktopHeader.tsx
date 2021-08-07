@@ -5,7 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { SVGComponent } from './DesktopHeaderSVG';
 import style from './DesktopHeader.module.css';
 
-const lngs: any = {
+interface Languaje {
+  en: { nativeName: string };
+  es: { nativeName: string };
+}
+
+const lngs: Languaje = {
   en: { nativeName: 'English' },
   es: { nativeName: 'Español' },
 };
@@ -16,6 +21,11 @@ const langBtnClass = (style: any, lng: string, i18n: any): string => {
   lng === 'en' ? (langClass += ' ' + style.en) : (langClass += ' ' + style.es);
   if (i18n.language === lng) langClass += ' ' + style.langSelected;
   return langClass;
+};
+
+const toggleLang = (i18n: any, lng: string): void => {
+  i18n.changeLanguage(lng);
+  localStorage.setItem('lang', lng);
 };
 
 export const DesktopHeader: FC = () => {
@@ -41,6 +51,11 @@ export const DesktopHeader: FC = () => {
     updateDragWindow();
   }, [updateDragWindow]);
 
+  useEffect(() => {
+    const lang = localStorage.getItem('lang') || '';
+    i18n.changeLanguage(lang);
+  }, [i18n]);
+
   return (
     <>
       <SVGComponent />
@@ -58,7 +73,7 @@ export const DesktopHeader: FC = () => {
                 key={lng}
                 className={langBtnClass(style, lng, i18n)}
                 type="button"
-                onClick={() => i18n.changeLanguage(lng)}
+                onClick={() => toggleLang(i18n, lng)}
               ></button>
             ))}
           </div>
