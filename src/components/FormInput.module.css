@@ -191,6 +191,8 @@ input[type='text'].small {
 .container input:checked ~ .checkmark {
   background-color: #daea4c;
   border: 2px solid #daea4c;
+  -webkit-transition: all 0.25s linear;
+  transition: all 0.25s linear;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

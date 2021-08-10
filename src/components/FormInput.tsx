@@ -76,6 +76,7 @@ export const FormInput: FC<IFormInput> = ({
           placeholder="No second team"
           onChange={onChange}
           disabled={isYou || disabled}
+          maxLength={23}
         />
       )}
       {type === 'select' && (
