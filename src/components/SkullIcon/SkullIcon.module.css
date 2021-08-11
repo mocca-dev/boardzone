@@ -1,5 +1,6 @@
 .skull {
   margin-right: 3px;
+  z-index: 1;
   filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
     brightness(90%) contrast(119%);
 }

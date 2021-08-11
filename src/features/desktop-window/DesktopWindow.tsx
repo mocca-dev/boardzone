@@ -7,6 +7,9 @@ import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
 import eventsData from './events-mock.json';
 import switchBtn from './switch-btn.png';
+import { useAppDispatch } from 'app/hooks';
+import { setShow, setText } from './loader-slice';
+import { Loader } from 'components/Loader/Loader';
 
 export interface IRoster {
   assists: any;
@@ -72,6 +75,7 @@ const setSelectedTeamType = (
 };
 
 const DesktopWindow: FC = () => {
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [teamsConfig, setTeamsConfig] = useState<ITeamsConfig>({
     topTeam: {
@@ -96,6 +100,8 @@ const DesktopWindow: FC = () => {
 
   // Process raw data and setting the local player
   useEffect(() => {
+    dispatch(setShow({ show: true }));
+    dispatch(setText({ text: 'Searching for you...' }));
     eventsData.some((event) => {
       const rosterKey = Object.keys(event.info.match_info)[0];
       const roster: IRoster = getKeyValue(rosterKey)(event.info.match_info);
@@ -109,6 +115,7 @@ const DesktopWindow: FC = () => {
             member1: { name: roster.player, kills: roster.kills },
           },
         });
+        dispatch(setShow({ show: false }));
         return true;
       }
       return false;
@@ -118,6 +125,8 @@ const DesktopWindow: FC = () => {
 
   // Fill the team
   useEffect(() => {
+    dispatch(setShow({ show: true }));
+    dispatch(setText({ text: 'Searching for your teamates...' }));
     eventsData.some((event) => {
       const rosterKey = Object.keys(event.info.match_info)[0];
       const roster: IRosterOption = getKeyValue(rosterKey)(
@@ -138,9 +147,10 @@ const DesktopWindow: FC = () => {
           setTeam([...team, { ...roster }]);
         }
       }
+      dispatch(setShow({ show: false }));
       return false;
     });
-  }, [localPlayer, team]);
+  }, [localPlayer, team, dispatch]);
 
   useEffect(() => {
     if (team.length === 1) {
@@ -235,6 +245,7 @@ const DesktopWindow: FC = () => {
       <div className={style.container}>
         {/* <header className={style.header}>
         </header> */}
+        <Loader />
         <main className={style.main}>
           <form action="">
             <span>
