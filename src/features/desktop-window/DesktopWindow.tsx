@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { SubTitle } from 'components/SubTitle';
 import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
-import eventsData from './events-mock.json';
 import switchBtn from './switch-btn.png';
 import { useAppDispatch } from 'app/hooks';
 import { setShow, setText } from './loader-slice';
 import { Loader } from 'components/Loader/Loader';
+import { eventObservable } from 'mocks/events';
 
 export interface IRoster {
   assists: any;
@@ -23,11 +23,6 @@ export interface IRoster {
   score: any;
   team_id: any;
 }
-
-interface IRosterOption extends IRoster {
-  disabled: boolean;
-}
-
 interface ITeamMemberConfig {
   name: string;
   kills: number;
@@ -94,52 +89,45 @@ const DesktopWindow: FC = () => {
   const [playersAmount, setPlayersAmount] = useState(true);
   const [showDifference, setShowDifference] = useState(true);
   const [showPrevPoints, setShowPrevPoints] = useState(true);
+  const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
   const [teamType, setTeamType] = useState<number>(2);
 
-  // Process raw data and setting the local player
   useEffect(() => {
-    dispatch(setShow({ show: true }));
-    dispatch(setText({ text: 'Searching for you...' }));
-    eventsData.some((event) => {
-      const rosterKey = Object.keys(event.info.match_info)[0];
-      const roster: IRoster = getKeyValue(rosterKey)(event.info.match_info);
+    eventObservable.subscribe((event: any) => {
+      setCurrentEvent(event);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (currentEvent) {
+      dispatch(setShow({ show: true }));
+      if (!localPlayer) dispatch(setText({ text: 'Searching for you...' }));
+
+      const rosterKey = Object.keys(currentEvent.info.match_info)[0];
+      const roster: IRoster = getKeyValue(rosterKey)(
+        currentEvent.info.match_info
+      );
+
       if (roster.is_local) {
         setLocalPlayer(roster);
-        setTeamsConfig({
+        setTeamsConfig(() => ({
           ...teamsConfig,
           topTeam: {
             ...teamsConfig.topTeam,
             name: 'Team' + roster.player.split('#')[0],
             member1: { name: roster.player, kills: roster.kills },
           },
-        });
-        dispatch(setShow({ show: false }));
-        return true;
-      }
-      return false;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Fill the team
-  useEffect(() => {
-    dispatch(setShow({ show: true }));
-    dispatch(setText({ text: 'Searching for your teamates...' }));
-    eventsData.some((event) => {
-      const rosterKey = Object.keys(event.info.match_info)[0];
-      const roster: IRosterOption = getKeyValue(rosterKey)(
-        event.info.match_info
-      );
-      // Roster must be of type IRoster and must be in the team and must not
-      // be the local and there can be more than 4 members
-      if (
+        }));
+      } else if (
         typeof roster === 'object' &&
         roster.team_id === localPlayer?.team_id &&
         roster.player !== localPlayer?.player &&
         team.length < 3
       ) {
+        dispatch(setText({ text: 'Searching for your team...' }));
+
         const isAlreadyInTheTeam = team?.some(
           (member) => roster.player === member.player
         );
@@ -147,12 +135,16 @@ const DesktopWindow: FC = () => {
           setTeam([...team, { ...roster }]);
         }
       }
+
       dispatch(setShow({ show: false }));
-      return false;
-    });
-  }, [localPlayer, team, dispatch]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentEvent]);
 
   useEffect(() => {
+    if (team.length > teamType) {
+      dispatch(setShow({ show: false }));
+    }
     if (team.length === 1) {
       setTeamsConfig({
         ...teamsConfig,
@@ -243,8 +235,6 @@ const DesktopWindow: FC = () => {
     <>
       <DesktopHeader />
       <div className={style.container}>
-        {/* <header className={style.header}>
-        </header> */}
         <Loader />
         <main className={style.main}>
           <form action="">
@@ -333,10 +323,6 @@ const DesktopWindow: FC = () => {
                 </>
               )}
             </div>
-            {/* BOTTOM FORM */}
-            {/* `${t('components.desktop.bottomTeamName')}-${t(
-                          'components.desktop.bottomTeamName'
-                        )}` */}
             {teamType >= 3 && (
               <div className={style.formRow}>
                 {Number(teamType) === 4 && (

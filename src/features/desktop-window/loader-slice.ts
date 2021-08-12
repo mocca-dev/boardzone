@@ -7,8 +7,10 @@ interface LoaderState {
 
 let initialState: LoaderState = {
   show: true,
-  text: '',
+  text: 'Waiting for data...',
 };
+
+let loaderCount = 0;
 
 const loaderSlice = createSlice({
   name: 'loader',
@@ -16,7 +18,14 @@ const loaderSlice = createSlice({
   reducers: {
     setShow(state, action: PayloadAction<{ show: boolean }>) {
       const { show } = action.payload;
-      state.show = show;
+
+      if (show) {
+        loaderCount++;
+        state.show = true;
+      } else {
+        if (loaderCount <= 0) state.show = false;
+        loaderCount--;
+      }
     },
     setText(state, action: PayloadAction<{ text: string }>) {
       const { text } = action.payload;
