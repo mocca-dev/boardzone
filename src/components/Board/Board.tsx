@@ -10,6 +10,7 @@ interface IBoard {
   localName: string;
   showDifference: boolean;
   showPrevPoints: boolean;
+  playersAmount: boolean;
 }
 
 export const Board: FC<IBoard> = ({
@@ -18,6 +19,7 @@ export const Board: FC<IBoard> = ({
   localName,
   showDifference,
   showPrevPoints,
+  playersAmount,
 }) => {
   const [topTotal, setTopTotal] = useState(0);
   const [bottomTotal, setBottomTotal] = useState(0);
@@ -33,12 +35,20 @@ export const Board: FC<IBoard> = ({
           teamsConfig.bottomTeam.member2.kills
       );
     } else {
-      setTopTotal(
-        teamsConfig.topTeam.member1.kills +
-          teamsConfig.topTeam.member2.kills +
-          teamsConfig.bottomTeam.member1.kills +
-          teamsConfig.bottomTeam.member2.kills
-      );
+      if (!playersAmount) {
+        setTopTotal(
+          teamsConfig.topTeam.member1.kills +
+            teamsConfig.topTeam.member2.kills +
+            teamsConfig.bottomTeam.member1.kills
+        );
+      } else {
+        setTopTotal(
+          teamsConfig.topTeam.member1.kills +
+            teamsConfig.topTeam.member2.kills +
+            teamsConfig.bottomTeam.member1.kills +
+            teamsConfig.bottomTeam.member2.kills
+        );
+      }
     }
   }, [hasSecond, teamsConfig]);
 

@@ -52,16 +52,20 @@ const validateNumberInput = (number: string): number => {
 const setSelectedTeamType = (
   value: string,
   setTeamType: Function,
+  setPlayersAmount: Function,
   t: any
 ): void => {
   switch (value) {
     case t('components.desktop.duo'):
+      setPlayersAmount(false);
       setTeamType(2);
       break;
     case t('components.desktop.trio'):
+      setPlayersAmount(false);
       setTeamType(3);
       break;
     case t('components.desktop.squad'):
+      setPlayersAmount(true);
       setTeamType(4);
       break;
     default:
@@ -221,8 +225,8 @@ const DesktopWindow: FC = () => {
             kills: player1.kills,
           },
           member2: {
-            name: teamType >= 3 && player2.player,
-            kills: teamType >= 3 && player2.kills,
+            name: player2.player,
+            kills: player2.kills,
           },
         },
       };
@@ -255,7 +259,12 @@ const DesktopWindow: FC = () => {
               <div className={style.formRow}>
                 <FormInput
                   onChange={(e) =>
-                    setSelectedTeamType(e.target.value, setTeamType, t)
+                    setSelectedTeamType(
+                      e.target.value,
+                      setTeamType,
+                      setPlayersAmount,
+                      t
+                    )
                   }
                   value=""
                   type="radio"
@@ -290,49 +299,37 @@ const DesktopWindow: FC = () => {
                 value={localPlayer ? localPlayer?.player.split('#')[0] : ''}
                 type="text"
               />
-              {teamType === 1 || teamType === 2 ? (
+              <FormInput
+                label={t('components.desktop.player2')}
+                afterIconText={teamsConfig.topTeam.member2.kills + ''}
+                options={team}
+                onChange={(e) => {
+                  const selectedMember = team.find((member) =>
+                    member.player.includes(e.target.value)
+                  );
+                  if (selectedMember) fillRemainingMemebers(selectedMember);
+                }}
+                value={teamsConfig.topTeam.member2.name.split('#')[0]}
+                type="select"
+              />
+              {playersAmount && showPrevPoints && teamType === 4 && (
                 <FormInput
-                  label={t('components.desktop.player2')}
-                  afterIconText={teamsConfig.topTeam.member2.kills + ''}
-                  onChange={() => {}}
-                  value={teamsConfig.topTeam.member2.name.split('#')[0]}
+                  label={t('components.desktop.prevMatchPoints')}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setTeamsConfig({
+                      ...teamsConfig,
+                      topTeam: {
+                        ...teamsConfig.topTeam,
+                        previousMatchPoints:
+                          value === '' ? 0 : validateNumberInput(value),
+                      },
+                    });
+                  }}
+                  small={true}
+                  value={teamsConfig.topTeam.previousMatchPoints}
                   type="text"
                 />
-              ) : (
-                <>
-                  <FormInput
-                    label={t('components.desktop.player2')}
-                    afterIconText={teamsConfig.topTeam.member2.kills + ''}
-                    options={team}
-                    onChange={(e) => {
-                      const selectedMember = team.find((member) =>
-                        member.player.includes(e.target.value)
-                      );
-                      if (selectedMember) fillRemainingMemebers(selectedMember);
-                    }}
-                    value={teamsConfig.topTeam.member2.name.split('#')[0]}
-                    type="select"
-                  />
-                  {playersAmount && showPrevPoints && teamType === 4 && (
-                    <FormInput
-                      label={t('components.desktop.prevMatchPoints')}
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        setTeamsConfig({
-                          ...teamsConfig,
-                          topTeam: {
-                            ...teamsConfig.topTeam,
-                            previousMatchPoints:
-                              value === '' ? 0 : validateNumberInput(value),
-                          },
-                        });
-                      }}
-                      small={true}
-                      value={teamsConfig.topTeam.previousMatchPoints}
-                      type="text"
-                    />
-                  )}
-                </>
               )}
             </div>
             {teamType >= 3 && (
@@ -373,14 +370,15 @@ const DesktopWindow: FC = () => {
                     type="text"
                     disabled={true}
                   />
-                  {Number(teamType) === 4 && teamsConfig.topTeam.member2.name && (
-                    <button
-                      className={style.switchBtn}
-                      onClick={(e) => switchMembers(e)}
-                    >
-                      <img src={switchBtn} alt="switch" />
-                    </button>
-                  )}
+                  {(teamType === 3 || teamType === 4) &&
+                    teamsConfig.topTeam.member2.name && (
+                      <button
+                        className={style.switchBtn}
+                        onClick={(e) => switchMembers(e)}
+                      >
+                        <img src={switchBtn} alt="switch" />
+                      </button>
+                    )}
                   {Number(teamType) === 4 && (
                     <>
                       <FormInput
@@ -467,10 +465,11 @@ const DesktopWindow: FC = () => {
           <SubTitle>{t('components.desktop.preview')}</SubTitle>
           <Board
             localName={localPlayer?.player}
-            hasSecond={playersAmount && Number(teamType) === 4}
+            hasSecond={playersAmount && teamType === 4}
             teamsConfig={teamsConfig}
             showDifference={showDifference}
             showPrevPoints={!!showPrevPoints}
+            playersAmount={playersAmount}
           />
         </aside>
         {/* <footer className={style.footer}>

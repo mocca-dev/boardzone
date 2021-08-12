@@ -57,6 +57,17 @@
   width: 20px;
   filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
     brightness(90%) contrast(119%);
+  -webkit-transition: background-color 0.25s linear;
+  transition: background-color 0.25s linear;
+}
+
+.switchBtn img:hover {
+  background-color: rgba(68, 68, 68, 0.35);
+  border-radius: 3px;
+  filter: invert(100%) sepia(0%) saturate(7454%) hue-rotate(36deg)
+    brightness(90%) contrast(119%);
+  -webkit-transition: background-color 0.25s linear;
+  transition: background-color 0.25s linear;
 }
 
 .inputsContainer {

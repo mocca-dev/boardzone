@@ -189,6 +189,8 @@ input[type='text'].small {
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
   background-color: #444;
+  transition: background-color 0.25s linear;
+  -webkit-transition: background-color 0.25s linear;
 }
 
 /* When the checkbox is checked, add a green background */
