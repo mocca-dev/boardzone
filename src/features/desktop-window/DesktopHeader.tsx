@@ -4,6 +4,7 @@ import { useWindow, useDrag } from 'overwolf-hooks';
 import { useTranslation } from 'react-i18next';
 import { SVGComponent } from './DesktopHeaderSVG';
 import style from './DesktopHeader.module.css';
+import { TwitterIcon } from 'components/TwitterIcon/TwitterIcon';
 
 interface Languaje {
   en: { nativeName: string };
@@ -95,11 +96,12 @@ export const DesktopHeader: FC = () => {
               <use xlinkHref="#window-control_settings" />
             </svg>
           </button>
-          <button className={`${style.icon} ${style['window-control']}`}>
-            <svg>
-              <use xlinkHref="#window-control_support" />
-            </svg>
-          </button> */}
+           */}
+          <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
+            <button className={`${style.icon} ${style['window-control']}`}>
+              <TwitterIcon />
+            </button>
+          </a>
           <button
             className={`${style.icon} ${style['window-control']}`}
             onClick={() => desktopWindow?.minimize()}
