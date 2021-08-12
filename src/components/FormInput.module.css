@@ -143,6 +143,10 @@ input[type='radio']:checked ~ label {
   background-color: #daea4c;
 }
 
+input[type='text']:disabled {
+  cursor: not-allowed;
+}
+
 input[type='text'].small {
   width: 100px;
   text-align: center;

@@ -72,7 +72,7 @@ export const FormInput: FC<IFormInput> = ({
         <input
           type="text"
           className={small ? style.small : ''}
-          value={disabled ? '' : value}
+          value={value}
           placeholder="No second team"
           onChange={onChange}
           disabled={isYou || disabled}

@@ -123,8 +123,7 @@ const DesktopWindow: FC = () => {
       } else if (
         typeof roster === 'object' &&
         roster.team_id === localPlayer?.team_id &&
-        roster.player !== localPlayer?.player &&
-        team.length < 3
+        roster.player !== localPlayer?.player
       ) {
         dispatch(setText({ text: 'Searching for your team...' }));
 
@@ -133,6 +132,19 @@ const DesktopWindow: FC = () => {
         );
         if (!isAlreadyInTheTeam) {
           setTeam([...team, { ...roster }]);
+        } else {
+          const rosterIndex = team.findIndex(
+            (player) => player.player === roster.player
+          );
+
+          const updatedRoster = { ...team[rosterIndex], kills: roster.kills };
+          const newTeam = [
+            ...team.slice(0, rosterIndex),
+            updatedRoster,
+            ...team.slice(rosterIndex + 1, team.length),
+          ];
+
+          setTeam(newTeam);
         }
       }
 
@@ -325,7 +337,7 @@ const DesktopWindow: FC = () => {
             </div>
             {teamType >= 3 && (
               <div className={style.formRow}>
-                {Number(teamType) === 4 && (
+                {teamType === 4 && (
                   <FormInput
                     label={t('components.desktop.bottomTeamName')}
                     onChange={(e) =>
@@ -337,7 +349,7 @@ const DesktopWindow: FC = () => {
                         },
                       })
                     }
-                    value={teamsConfig.bottomTeam.name}
+                    value={!playersAmount ? '' : teamsConfig.bottomTeam.name}
                     type="text"
                     disabled={!playersAmount}
                   />
@@ -359,6 +371,7 @@ const DesktopWindow: FC = () => {
                     onChange={() => {}}
                     value={teamsConfig.bottomTeam.member1.name.split('#')[0]}
                     type="text"
+                    disabled={true}
                   />
                   {Number(teamType) === 4 && teamsConfig.topTeam.member2.name && (
                     <button
@@ -382,6 +395,7 @@ const DesktopWindow: FC = () => {
                             : ''
                         }
                         type="text"
+                        disabled={true}
                       />
                       {playersAmount && showPrevPoints && (
                         <FormInput
