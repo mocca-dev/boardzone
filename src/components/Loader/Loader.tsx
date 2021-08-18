@@ -11,7 +11,7 @@ export const Loader: FC = () => {
       {show && (
         <div className={style.container}>
           <div className={style.content}>
-            <img src={puff} alt="loader" />
+            <img src={puff} height="50px" alt="loader" />
             <span>{text}</span>
           </div>
         </div>
