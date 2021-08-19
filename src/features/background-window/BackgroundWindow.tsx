@@ -1,20 +1,20 @@
-import React, { FC, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { FC, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { WINDOW_NAMES } from "app/constants";
-import { setEvent, setInfo } from "./background-slice";
+import { WINDOW_NAMES } from 'app/constants';
+import { setEvent, setInfo } from './background-slice';
 import {
   useWindow,
   useGameEventProvider,
   useRunningGame,
-} from "overwolf-hooks";
+} from 'overwolf-hooks';
 
 const { DESKTOP, INGAME } = WINDOW_NAMES;
 
 enum Game {
-  "GameExample" = 99999,
+  'GameExample' = 21626,
 }
-const gameFeatures = ["kill", "match"];
+const gameFeatures = ['kill', 'match'];
 
 const BackgroundWindow: FC = () => {
   const [currentGame] = useRunningGame();
