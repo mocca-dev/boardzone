@@ -16,12 +16,19 @@
       'aside aside'
       'main main';
   }
+
+  main.main {
+    margin-top: 0;
+  }
 }
 
 .main {
+  margin-top: 48px;
   grid-area: main;
 }
+
 .aside {
+  margin-top: 48px;
   grid-area: aside;
 }
 
