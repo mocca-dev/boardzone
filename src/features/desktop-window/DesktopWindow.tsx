@@ -90,7 +90,7 @@ const DesktopWindow: FC = () => {
       previousMatchPoints: 0,
     },
   });
-  const [playersAmount, setPlayersAmount] = useState(true);
+  const [mode, setMode] = useState(true);
   const [showDifference, setShowDifference] = useState(true);
   const [showPrevPoints, setShowPrevPoints] = useState(true);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
@@ -259,12 +259,7 @@ const DesktopWindow: FC = () => {
               <div className={style.formRow}>
                 <FormInput
                   onChange={(e) =>
-                    setSelectedTeamType(
-                      e.target.value,
-                      setTeamType,
-                      setPlayersAmount,
-                      t
-                    )
+                    setSelectedTeamType(e.target.value, setTeamType, setMode, t)
                   }
                   value=""
                   type="radio"
@@ -312,7 +307,7 @@ const DesktopWindow: FC = () => {
                 value={teamsConfig.topTeam.member2.name.split('#')[0]}
                 type="select"
               />
-              {playersAmount && showPrevPoints && teamType === 4 && (
+              {mode && showPrevPoints && teamType === 4 && (
                 <FormInput
                   label={t('components.desktop.prevMatchPoints')}
                   onChange={(e) => {
@@ -346,9 +341,9 @@ const DesktopWindow: FC = () => {
                         },
                       })
                     }
-                    value={!playersAmount ? '' : teamsConfig.bottomTeam.name}
+                    value={!mode ? '' : teamsConfig.bottomTeam.name}
                     type="text"
-                    disabled={!playersAmount}
+                    disabled={!mode}
                   />
                 )}
                 <span
@@ -395,7 +390,7 @@ const DesktopWindow: FC = () => {
                         type="text"
                         disabled={true}
                       />
-                      {playersAmount && showPrevPoints && (
+                      {mode && showPrevPoints && (
                         <FormInput
                           label={t('components.desktop.prevMatchPoints')}
                           onChange={(e) => {
@@ -425,15 +420,15 @@ const DesktopWindow: FC = () => {
                   <span>
                     <div className={style.formRow}>
                       <FormInput
-                        onChange={() => setPlayersAmount(!playersAmount)}
-                        value={playersAmount}
+                        onChange={() => setMode(!mode)}
+                        value={mode}
                         type="checkbox"
                         label={t('components.desktop.mode')}
                       />
                     </div>
                   </span>
                 )}
-                {teamType === 4 && playersAmount && (
+                {teamType === 4 && mode && (
                   <span>
                     <div className={style.formRow}>
                       <FormInput
@@ -445,7 +440,7 @@ const DesktopWindow: FC = () => {
                     </div>
                   </span>
                 )}
-                {teamType === 4 && playersAmount && (
+                {teamType === 4 && mode && (
                   <span>
                     <div className={style.formRow}>
                       <FormInput
@@ -465,11 +460,12 @@ const DesktopWindow: FC = () => {
           <SubTitle>{t('components.desktop.preview')}</SubTitle>
           <Board
             localName={localPlayer?.player}
-            hasSecond={playersAmount && teamType === 4}
+            hasSecond={mode && teamType === 4}
             teamsConfig={teamsConfig}
             showDifference={showDifference}
             showPrevPoints={!!showPrevPoints}
-            playersAmount={playersAmount}
+            mode={mode}
+            teamType={teamType}
           />
         </aside>
         {/* <footer className={style.footer}>

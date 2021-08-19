@@ -10,7 +10,8 @@ interface IBoard {
   localName: string;
   showDifference: boolean;
   showPrevPoints: boolean;
-  playersAmount: boolean;
+  mode: boolean;
+  teamType: number;
 }
 
 export const Board: FC<IBoard> = ({
@@ -19,7 +20,8 @@ export const Board: FC<IBoard> = ({
   localName,
   showDifference,
   showPrevPoints,
-  playersAmount,
+  mode,
+  teamType,
 }) => {
   const [topTotal, setTopTotal] = useState(0);
   const [bottomTotal, setBottomTotal] = useState(0);
@@ -35,22 +37,19 @@ export const Board: FC<IBoard> = ({
           teamsConfig.bottomTeam.member2.kills
       );
     } else {
-      if (!playersAmount) {
+      if (teamType === 2) {
+        setTopTotal(
+          teamsConfig.topTeam.member1.kills + teamsConfig.topTeam.member2.kills
+        );
+      } else if (teamType === 3) {
         setTopTotal(
           teamsConfig.topTeam.member1.kills +
             teamsConfig.topTeam.member2.kills +
             teamsConfig.bottomTeam.member1.kills
         );
-      } else {
-        setTopTotal(
-          teamsConfig.topTeam.member1.kills +
-            teamsConfig.topTeam.member2.kills +
-            teamsConfig.bottomTeam.member1.kills +
-            teamsConfig.bottomTeam.member2.kills
-        );
       }
     }
-  }, [hasSecond, teamsConfig]);
+  }, [hasSecond, teamsConfig, mode, teamType]);
 
   useEffect(() => {
     hasSecond &&
