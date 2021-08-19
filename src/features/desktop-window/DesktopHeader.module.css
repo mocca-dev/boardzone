@@ -43,9 +43,10 @@ button:focus {
 }
 
 .header {
+  position: fixed;
   display: flex;
   align-items: center;
-  height: 100%;
+  width: 100%;
   background-color: #131313;
   color: white;
 }
@@ -108,4 +109,13 @@ button:focus {
 
 .langSelected {
   opacity: 1;
+}
+
+.aButton {
+  display: flex;
+  align-items: center;
+}
+
+.aButton button {
+  height: 1rem;
 }

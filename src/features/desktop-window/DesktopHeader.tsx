@@ -97,7 +97,12 @@ export const DesktopHeader: FC = () => {
             </svg>
           </button>
            */}
-          <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
+          <a
+            className={style.aButton}
+            href="https://www.twitter.com"
+            target="_blank"
+            rel="noreferrer"
+          >
             <button className={`${style.icon} ${style['window-control']}`}>
               <TwitterIcon />
             </button>
