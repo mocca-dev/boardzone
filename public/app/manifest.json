@@ -48,16 +48,16 @@
         "transparent": true,
         "resizable": true,
         "size": {
-          "width": 1212,
-          "height": 699
+          "width": 1150,
+          "height": 400
         },
         "min_size": {
-          "width": 1212,
-          "height": 699
+          "width": 850,
+          "height": 400
         },
         "max_size": {
           "width": 1212,
-          "height": 699
+          "height": 600
         },
         "desktop_only": true
       },
@@ -70,16 +70,16 @@
         "resizable": true,
         "override_on_update": true,
         "size": {
-          "width": 250,
-          "height": 340
+          "width": 230,
+          "height": 93
         },
         "min_size": {
-          "width": 250,
-          "height": 340
+          "width": 230,
+          "height": 93
         },
         "max_size": {
-          "width": 400,
-          "height": 360
+          "width": 230,
+          "height": 93
         },
         "start_position": {
           "top": 500,
