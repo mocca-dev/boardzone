@@ -6,10 +6,17 @@ import { SubTitle } from 'components/SubTitle';
 import { FormInput } from 'components/FormInput';
 import { Board } from 'components/Board/Board';
 import switchBtn from './switch-btn.png';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { setShow, setText } from './loader-slice';
+import { setTeamsConfig } from 'features/background-window/board-slice';
 import { Loader } from 'components/Loader/Loader';
 import { eventObservable } from 'mocks/events';
+import {
+  setMode,
+  setShowDifference,
+  setShowPrevPoints,
+  setTeamType,
+} from './settings-slice';
 
 export interface IRoster {
   assists: any;
@@ -51,52 +58,37 @@ const validateNumberInput = (number: string): number => {
 
 const setSelectedTeamType = (
   value: string,
-  setTeamType: Function,
-  setPlayersAmount: Function,
+  dispatch: Function,
   t: any
 ): void => {
   switch (value) {
     case t('components.desktop.duo'):
-      setPlayersAmount(false);
-      setTeamType(2);
+      dispatch(setMode({ mode: false }));
+      dispatch(setTeamType({ teamType: 2 }));
       break;
     case t('components.desktop.trio'):
-      setPlayersAmount(false);
-      setTeamType(3);
+      dispatch(setMode({ mode: false }));
+      dispatch(setTeamType({ teamType: 3 }));
       break;
     case t('components.desktop.squad'):
-      setPlayersAmount(true);
-      setTeamType(4);
+      dispatch(setMode({ mode: true }));
+      dispatch(setTeamType({ teamType: 4 }));
       break;
     default:
-      setTeamType(0);
+      dispatch(setTeamType({ teamType: 0 }));
   }
 };
 
 const DesktopWindow: FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [teamsConfig, setTeamsConfig] = useState<ITeamsConfig>({
-    topTeam: {
-      name: 'TopTeam',
-      member1: { name: '', kills: 0 },
-      member2: { name: '', kills: 0 },
-      previousMatchPoints: 0,
-    },
-    bottomTeam: {
-      name: 'BottomTeam',
-      member1: { name: 'Selecciona a tu compañero', kills: 0 },
-      member2: { name: 'Selecciona a tu compañero', kills: 0 },
-      previousMatchPoints: 0,
-    },
-  });
-  const [mode, setMode] = useState(true);
-  const [showDifference, setShowDifference] = useState(true);
-  const [showPrevPoints, setShowPrevPoints] = useState(true);
+  const { teamsConfig } = useAppSelector((state) => state.board);
+  const { mode, showPrevPoints, showDifference, teamType } = useAppSelector(
+    (state) => state.settings
+  );
   const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
-  const [teamType, setTeamType] = useState<number>(2);
 
   useEffect(() => {
     eventObservable.subscribe((event: any) => {
@@ -116,14 +108,18 @@ const DesktopWindow: FC = () => {
 
       if (roster.is_local) {
         setLocalPlayer(roster);
-        setTeamsConfig(() => ({
-          ...teamsConfig,
-          topTeam: {
-            ...teamsConfig.topTeam,
-            name: 'Team' + roster.player.split('#')[0],
-            member1: { name: roster.player, kills: roster.kills },
-          },
-        }));
+        dispatch(
+          setTeamsConfig({
+            config: {
+              ...teamsConfig,
+              topTeam: {
+                ...teamsConfig.topTeam,
+                name: 'Team' + roster.player.split('#')[0],
+                member1: { name: roster.player, kills: roster.kills },
+              },
+            },
+          })
+        );
       } else if (
         typeof roster === 'object' &&
         roster.team_id === localPlayer?.team_id &&
@@ -162,39 +158,51 @@ const DesktopWindow: FC = () => {
       dispatch(setShow({ show: false }));
     }
     if (team.length === 1) {
-      setTeamsConfig({
-        ...teamsConfig,
-        topTeam: {
-          ...teamsConfig.topTeam,
-          member2: { name: team[0].player, kills: team[0].kills },
-        },
-      });
+      dispatch(
+        setTeamsConfig({
+          config: {
+            ...teamsConfig,
+            topTeam: {
+              ...teamsConfig.topTeam,
+              member2: { name: team[0].player, kills: team[0].kills },
+            },
+          },
+        })
+      );
     } else if (team.length === 2) {
-      setTeamsConfig({
-        ...teamsConfig,
-        topTeam: {
-          ...teamsConfig.topTeam,
-          member2: { name: team[0].player, kills: team[0].kills },
-        },
-        bottomTeam: {
-          ...teamsConfig.bottomTeam,
-          member1: { name: team[1].player, kills: team[1].kills },
-        },
-      });
+      dispatch(
+        setTeamsConfig({
+          config: {
+            ...teamsConfig,
+            topTeam: {
+              ...teamsConfig.topTeam,
+              member2: { name: team[0].player, kills: team[0].kills },
+            },
+            bottomTeam: {
+              ...teamsConfig.bottomTeam,
+              member1: { name: team[1].player, kills: team[1].kills },
+            },
+          },
+        })
+      );
     } else if (team.length === 3) {
-      setTeamsConfig({
-        ...teamsConfig,
-        topTeam: {
-          ...teamsConfig.topTeam,
-          member2: { name: team[0].player, kills: team[0].kills },
-        },
-        bottomTeam: {
-          ...teamsConfig.bottomTeam,
-          name: 'Team' + team[1].player.split('#')[0],
-          member1: { name: team[1].player, kills: team[1].kills },
-          member2: { name: team[2].player, kills: team[2].kills },
-        },
-      });
+      dispatch(
+        setTeamsConfig({
+          config: {
+            ...teamsConfig,
+            topTeam: {
+              ...teamsConfig.topTeam,
+              member2: { name: team[0].player, kills: team[0].kills },
+            },
+            bottomTeam: {
+              ...teamsConfig.bottomTeam,
+              name: 'Team' + team[1].player.split('#')[0],
+              member1: { name: team[1].player, kills: team[1].kills },
+              member2: { name: team[2].player, kills: team[2].kills },
+            },
+          },
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [team]);
@@ -230,21 +238,25 @@ const DesktopWindow: FC = () => {
           },
         },
       };
-      setTeamsConfig(updatedTeamsConfig);
+      dispatch(setTeamsConfig({ config: updatedTeamsConfig }));
     }
   };
 
   const switchMembers = (e: any) => {
     e.preventDefault();
-    setTeamsConfig({
-      ...teamsConfig,
-      bottomTeam: {
-        ...teamsConfig.bottomTeam,
-        name: 'Team' + teamsConfig.bottomTeam.member2.name.split('#')[0],
-        member1: { ...teamsConfig.bottomTeam.member2 },
-        member2: { ...teamsConfig.bottomTeam.member1 },
-      },
-    });
+    dispatch(
+      setTeamsConfig({
+        config: {
+          ...teamsConfig,
+          bottomTeam: {
+            ...teamsConfig.bottomTeam,
+            name: 'Team' + teamsConfig.bottomTeam.member2.name.split('#')[0],
+            member1: { ...teamsConfig.bottomTeam.member2 },
+            member2: { ...teamsConfig.bottomTeam.member1 },
+          },
+        },
+      })
+    );
   };
 
   return (
@@ -259,7 +271,7 @@ const DesktopWindow: FC = () => {
               <div className={style.formRow}>
                 <FormInput
                   onChange={(e) =>
-                    setSelectedTeamType(e.target.value, setTeamType, setMode, t)
+                    setSelectedTeamType(e.target.value, dispatch, t)
                   }
                   value=""
                   type="radio"
@@ -270,18 +282,22 @@ const DesktopWindow: FC = () => {
               </div>
             </span>
             <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
-
+            <p>/{teamsConfig.topTeam.name}/</p>
             <div className={style.formRow}>
               <FormInput
                 label={t('components.desktop.topTeamName')}
                 onChange={(e) =>
-                  setTeamsConfig({
-                    ...teamsConfig,
-                    topTeam: {
-                      ...teamsConfig.topTeam,
-                      name: e.target.value,
-                    },
-                  })
+                  dispatch(
+                    setTeamsConfig({
+                      config: {
+                        ...teamsConfig,
+                        topTeam: {
+                          ...teamsConfig.topTeam,
+                          name: e.target.value,
+                        },
+                      },
+                    })
+                  )
                 }
                 value={teamsConfig.topTeam.name}
                 type="text"
@@ -312,14 +328,18 @@ const DesktopWindow: FC = () => {
                   label={t('components.desktop.prevMatchPoints')}
                   onChange={(e) => {
                     const { value } = e.target;
-                    setTeamsConfig({
-                      ...teamsConfig,
-                      topTeam: {
-                        ...teamsConfig.topTeam,
-                        previousMatchPoints:
-                          value === '' ? 0 : validateNumberInput(value),
-                      },
-                    });
+                    dispatch(
+                      setTeamsConfig({
+                        config: {
+                          ...teamsConfig,
+                          topTeam: {
+                            ...teamsConfig.topTeam,
+                            previousMatchPoints:
+                              value === '' ? 0 : validateNumberInput(value),
+                          },
+                        },
+                      })
+                    );
                   }}
                   small={true}
                   value={teamsConfig.topTeam.previousMatchPoints}
@@ -333,13 +353,17 @@ const DesktopWindow: FC = () => {
                   <FormInput
                     label={t('components.desktop.bottomTeamName')}
                     onChange={(e) =>
-                      setTeamsConfig({
-                        ...teamsConfig,
-                        bottomTeam: {
-                          ...teamsConfig.bottomTeam,
-                          name: e.target.value,
-                        },
-                      })
+                      dispatch(
+                        setTeamsConfig({
+                          config: {
+                            ...teamsConfig,
+                            bottomTeam: {
+                              ...teamsConfig.bottomTeam,
+                              name: e.target.value,
+                            },
+                          },
+                        })
+                      )
                     }
                     value={!mode ? '' : teamsConfig.bottomTeam.name}
                     type="text"
@@ -395,14 +419,20 @@ const DesktopWindow: FC = () => {
                           label={t('components.desktop.prevMatchPoints')}
                           onChange={(e) => {
                             const { value } = e.target;
-                            setTeamsConfig({
-                              ...teamsConfig,
-                              bottomTeam: {
-                                ...teamsConfig.bottomTeam,
-                                previousMatchPoints:
-                                  value === '' ? 0 : validateNumberInput(value),
-                              },
-                            });
+                            dispatch(
+                              setTeamsConfig({
+                                config: {
+                                  ...teamsConfig,
+                                  bottomTeam: {
+                                    ...teamsConfig.bottomTeam,
+                                    previousMatchPoints:
+                                      value === ''
+                                        ? 0
+                                        : validateNumberInput(value),
+                                  },
+                                },
+                              })
+                            );
                           }}
                           small={true}
                           value={teamsConfig.bottomTeam.previousMatchPoints}
@@ -420,7 +450,7 @@ const DesktopWindow: FC = () => {
                   <span>
                     <div className={style.formRow}>
                       <FormInput
-                        onChange={() => setMode(!mode)}
+                        onChange={() => dispatch(setMode({ mode: !mode }))}
                         value={mode}
                         type="checkbox"
                         label={t('components.desktop.mode')}
@@ -432,7 +462,13 @@ const DesktopWindow: FC = () => {
                   <span>
                     <div className={style.formRow}>
                       <FormInput
-                        onChange={() => setShowDifference(!showDifference)}
+                        onChange={() =>
+                          dispatch(
+                            setShowDifference({
+                              showDifference: !showDifference,
+                            })
+                          )
+                        }
                         value={showDifference}
                         type="checkbox"
                         label={t('components.desktop.difference')}
@@ -444,7 +480,13 @@ const DesktopWindow: FC = () => {
                   <span>
                     <div className={style.formRow}>
                       <FormInput
-                        onChange={() => setShowPrevPoints(!showPrevPoints)}
+                        onChange={() =>
+                          dispatch(
+                            setShowPrevPoints({
+                              showPrevPoints: !showPrevPoints,
+                            })
+                          )
+                        }
                         value={showPrevPoints}
                         type="checkbox"
                         label={t('components.desktop.showPrevMatchPoints')}
@@ -458,15 +500,7 @@ const DesktopWindow: FC = () => {
         </main>
         <aside className={style.aside}>
           <SubTitle>{t('components.desktop.preview')}</SubTitle>
-          <Board
-            localName={localPlayer?.player}
-            hasSecond={mode && teamType === 4}
-            teamsConfig={teamsConfig}
-            showDifference={showDifference}
-            showPrevPoints={!!showPrevPoints}
-            mode={mode}
-            teamType={teamType}
-          />
+          <Board />
         </aside>
         {/* <footer className={style.footer}>
           <Title color="white">{t("components.desktop.footer")}</Title>

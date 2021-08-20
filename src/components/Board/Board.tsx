@@ -1,31 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { BoardRow } from './BoardRow/BoardRow';
 import style from './Board.module.css';
-import { ITeamsConfig } from 'features/desktop-window/DesktopWindow';
 import { BoardHeader } from './BoardHeader/BoardHeader';
+import { useAppSelector } from 'app/hooks';
 
-interface IBoard {
-  hasSecond: boolean;
-  teamsConfig: ITeamsConfig;
-  localName: string;
-  showDifference: boolean;
-  showPrevPoints: boolean;
-  mode: boolean;
-  teamType: number;
-}
-
-export const Board: FC<IBoard> = ({
-  hasSecond,
-  teamsConfig,
-  localName,
-  showDifference,
-  showPrevPoints,
-  mode,
-  teamType,
-}) => {
+export const Board: FC = () => {
+  const { mode, showPrevPoints, showDifference, teamType } = useAppSelector(
+    (state) => state.settings
+  );
   const [topTotal, setTopTotal] = useState(0);
   const [bottomTotal, setBottomTotal] = useState(0);
   const [difference, setDifference] = useState(0);
+  const [hasSecond, setHasSecond] = useState(false);
+  const { teamsConfig } = useAppSelector((state) => state.board);
 
   useEffect(() => {
     if (hasSecond) {
@@ -60,6 +47,10 @@ export const Board: FC<IBoard> = ({
       );
   }, [topTotal, bottomTotal, hasSecond, teamsConfig]);
 
+  useEffect(() => {
+    setHasSecond(mode && teamType === 4);
+  }, [mode, teamType]);
+
   return (
     <div className={style.container}>
       <BoardHeader />
@@ -71,9 +62,7 @@ export const Board: FC<IBoard> = ({
             prevMatch={
               showPrevPoints ? teamsConfig.topTeam.previousMatchPoints : -1
             }
-            youName={
-              hasSecond && localName === teamsConfig.topTeam.member1.name
-            }
+            youName={hasSecond}
             hasSecond={hasSecond}
           />
           {hasSecond && (
