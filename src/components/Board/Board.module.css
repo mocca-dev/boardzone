@@ -9,7 +9,15 @@
   align-items: center;
   width: 230px;
   height: 70px;
-  padding: 13px 15px;
+  padding: 0 15px;
+  font-weight: bold;
+}
+
+.footerContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 15px 13px 15px;
   font-weight: bold;
 }
 

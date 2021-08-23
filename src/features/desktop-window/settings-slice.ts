@@ -4,6 +4,7 @@ interface SettingsState {
   mode: boolean;
   showPrevPoints: boolean;
   showDifference: boolean;
+  showMoney: boolean;
   teamType: number;
 }
 
@@ -11,6 +12,7 @@ let initialState: SettingsState = {
   mode: true,
   showDifference: true,
   showPrevPoints: true,
+  showMoney: true,
   teamType: 2,
 };
 
@@ -36,10 +38,18 @@ const settingsSlice = createSlice({
     setTeamType(state, action: PayloadAction<{ teamType: number }>) {
       state.teamType = action.payload.teamType;
     },
+    setShowMoney(state, action: PayloadAction<{ showMoney: boolean }>) {
+      state.showMoney = action.payload.showMoney;
+    },
   },
 });
 
-export const { setMode, setShowPrevPoints, setShowDifference, setTeamType } =
-  settingsSlice.actions;
+export const {
+  setMode,
+  setShowPrevPoints,
+  setShowDifference,
+  setTeamType,
+  setShowMoney,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

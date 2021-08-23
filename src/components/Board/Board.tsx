@@ -3,14 +3,18 @@ import { BoardRow } from './BoardRow/BoardRow';
 import style from './Board.module.css';
 import { BoardHeader } from './BoardHeader/BoardHeader';
 import { useAppSelector } from 'app/hooks';
+import { BoardCanRow } from './BoardCanRow/BoardCanRow';
 
 export const Board: FC = () => {
-  const { mode, showPrevPoints, showDifference, teamType } = useAppSelector(
-    (state) => state.settings
-  );
+  const { mode, showPrevPoints, showDifference, teamType, showMoney } =
+    useAppSelector((state) => state.settings);
   const [topTotal, setTopTotal] = useState(0);
   const [bottomTotal, setBottomTotal] = useState(0);
   const [difference, setDifference] = useState(0);
+  const [currentDeads, setCurrentDeads] = useState(0);
+  const [canBuyDeads, setCanBuyDeads] = useState(0);
+  const [totalCash, setTotalCash] = useState(0);
+  const [canBuyBox, setCanBuyBox] = useState(false);
   const [hasSecond, setHasSecond] = useState(false);
   const { teamsConfig } = useAppSelector((state) => state.board);
 
@@ -50,6 +54,33 @@ export const Board: FC = () => {
   useEffect(() => {
     setHasSecond(mode && teamType === 4);
   }, [mode, teamType]);
+
+  useEffect(() => {
+    const { topTeam, bottomTeam } = teamsConfig;
+    const newDeads = [
+      !topTeam.member1.armor,
+      !topTeam.member2.armor,
+      !bottomTeam.member1.armor,
+      !bottomTeam.member2.armor,
+    ];
+    let totalCash = topTeam.member1.cash + topTeam.member2.cash;
+
+    if (!hasSecond && teamType > 2) {
+      if (teamType === 3) {
+        totalCash += bottomTeam.member1.cash;
+      } else {
+        totalCash += bottomTeam.member1.cash + bottomTeam.member2.cash;
+      }
+    }
+    const howManyDeadsCanBuy = Math.floor(totalCash / 4000);
+
+    setCanBuyDeads(
+      howManyDeadsCanBuy > currentDeads ? currentDeads : howManyDeadsCanBuy
+    );
+    setCurrentDeads(newDeads.filter((dead) => dead).length);
+    setCanBuyBox(Math.floor(totalCash / 10000) >= 1);
+    setTotalCash(totalCash);
+  }, [teamsConfig, currentDeads, hasSecond, teamType]);
 
   return (
     <div className={style.container}>
@@ -101,6 +132,16 @@ export const Board: FC = () => {
           </span>
         )}
       </div>
+      {showMoney && (
+        <div className={style.footerContainer}>
+          <BoardCanRow
+            canBuyBox={canBuyBox}
+            canBuyDeads={canBuyDeads}
+            currentDeads={currentDeads}
+            totalCash={totalCash}
+          />
+        </div>
+      )}
     </div>
   );
 };

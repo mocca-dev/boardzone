@@ -20,7 +20,9 @@
       "type": "Tipo de equipo",
       "duo": "Dúo",
       "trio": "Trío",
-      "squad": "Cuarteto"
+      "squad": "Cuarteto",
+      "money": "Información de dinero",
+      "moneyLabel": "Mostrar/Ocultar la data sobre el dinero"
     }
   }
 }

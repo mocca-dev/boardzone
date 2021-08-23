@@ -20,7 +20,9 @@
       "type": "Team Type",
       "duo": "Duo",
       "trio": "Trio",
-      "squad": "Squad"
+      "squad": "Squad",
+      "money": "Show me the money",
+      "moneyLabel": "Show/Hide money data"
     }
   }
 }

@@ -14,6 +14,7 @@ import { eventObservable } from 'mocks/events';
 import {
   setMode,
   setShowDifference,
+  setShowMoney,
   setShowPrevPoints,
   setTeamType,
 } from './settings-slice';
@@ -29,10 +30,14 @@ export interface IRoster {
   rank: any;
   score: any;
   team_id: any;
+  armor: any;
+  cash: any;
 }
 interface ITeamMemberConfig {
   name: string;
   kills: number;
+  armor: number;
+  cash: number;
 }
 
 interface ITeamConfig {
@@ -83,9 +88,8 @@ const DesktopWindow: FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { teamsConfig } = useAppSelector((state) => state.board);
-  const { mode, showPrevPoints, showDifference, teamType } = useAppSelector(
-    (state) => state.settings
-  );
+  const { mode, showPrevPoints, showDifference, teamType, showMoney } =
+    useAppSelector((state) => state.settings);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
@@ -115,7 +119,12 @@ const DesktopWindow: FC = () => {
               topTeam: {
                 ...teamsConfig.topTeam,
                 name: 'Team' + roster.player.split('#')[0],
-                member1: { name: roster.player, kills: roster.kills },
+                member1: {
+                  name: roster.player,
+                  kills: roster.kills,
+                  armor: roster.armor,
+                  cash: roster.cash,
+                },
               },
             },
           })
@@ -137,7 +146,12 @@ const DesktopWindow: FC = () => {
             (player) => player.player === roster.player
           );
 
-          const updatedRoster = { ...team[rosterIndex], kills: roster.kills };
+          const updatedRoster = {
+            ...team[rosterIndex],
+            kills: roster.kills,
+            armor: roster.armor,
+            cash: roster.cash,
+          };
           const newTeam = [
             ...team.slice(0, rosterIndex),
             updatedRoster,
@@ -164,7 +178,12 @@ const DesktopWindow: FC = () => {
             ...teamsConfig,
             topTeam: {
               ...teamsConfig.topTeam,
-              member2: { name: team[0].player, kills: team[0].kills },
+              member2: {
+                name: team[0].player,
+                kills: team[0].kills,
+                armor: team[0].armor,
+                cash: team[0].cash,
+              },
             },
           },
         })
@@ -176,11 +195,21 @@ const DesktopWindow: FC = () => {
             ...teamsConfig,
             topTeam: {
               ...teamsConfig.topTeam,
-              member2: { name: team[0].player, kills: team[0].kills },
+              member2: {
+                name: team[0].player,
+                kills: team[0].kills,
+                armor: team[0].armor,
+                cash: team[0].cash,
+              },
             },
             bottomTeam: {
               ...teamsConfig.bottomTeam,
-              member1: { name: team[1].player, kills: team[1].kills },
+              member1: {
+                name: team[1].player,
+                kills: team[1].kills,
+                armor: team[1].armor,
+                cash: team[1].cash,
+              },
             },
           },
         })
@@ -192,13 +221,28 @@ const DesktopWindow: FC = () => {
             ...teamsConfig,
             topTeam: {
               ...teamsConfig.topTeam,
-              member2: { name: team[0].player, kills: team[0].kills },
+              member2: {
+                name: team[0].player,
+                kills: team[0].kills,
+                armor: team[0].armor,
+                cash: team[0].cash,
+              },
             },
             bottomTeam: {
               ...teamsConfig.bottomTeam,
               name: 'Team' + team[1].player.split('#')[0],
-              member1: { name: team[1].player, kills: team[1].kills },
-              member2: { name: team[2].player, kills: team[2].kills },
+              member1: {
+                name: team[1].player,
+                kills: team[1].kills,
+                armor: team[1].armor,
+                cash: team[1].cash,
+              },
+              member2: {
+                name: team[2].player,
+                kills: team[2].kills,
+                armor: team[2].armor,
+                cash: team[2].cash,
+              },
             },
           },
         })
@@ -223,6 +267,8 @@ const DesktopWindow: FC = () => {
           member2: {
             name: partner?.player,
             kills: partner?.kills,
+            armor: partner?.armor,
+            cash: partner?.cash,
           },
         },
         bottomTeam: {
@@ -231,10 +277,14 @@ const DesktopWindow: FC = () => {
           member1: {
             name: player1.player,
             kills: player1.kills,
+            armor: player1.armor,
+            cash: player1.cash,
           },
           member2: {
             name: player2.player,
             kills: player2.kills,
+            armor: player2.armor,
+            cash: player2.cash,
           },
         },
       };
@@ -281,8 +331,22 @@ const DesktopWindow: FC = () => {
                 />
               </div>
             </span>
+            <span>
+              <SubTitle>{t('components.desktop.money')}</SubTitle>
+              <div className={style.formRow}>
+                <div className={style.formRow}>
+                  <FormInput
+                    onChange={() =>
+                      dispatch(setShowMoney({ showMoney: !showMoney }))
+                    }
+                    value={showMoney}
+                    type="checkbox"
+                    label={t('components.desktop.moneyLabel')}
+                  />
+                </div>
+              </div>
+            </span>
             <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
-            <p>/{teamsConfig.topTeam.name}/</p>
             <div className={style.formRow}>
               <FormInput
                 label={t('components.desktop.topTeamName')}
@@ -444,7 +508,7 @@ const DesktopWindow: FC = () => {
                 </span>
               </div>
             )}
-            {Number(teamType) >= 3 && (
+            {teamType >= 3 && (
               <span className={style.inputsContainer}>
                 {teamType === 4 && (
                   <span>

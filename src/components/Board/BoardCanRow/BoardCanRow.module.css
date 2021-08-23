@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.container:first-child {
+  margin-bottom: 3px;
+}
+
+.container.you {
+  color: #daea4c;
+}
+
+.cell {
+  display: flex;
+  width: 80px;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: auto;
+}
+
+.cash {
+  display: block;
+  width: 120px;
+}

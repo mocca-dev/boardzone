@@ -9,14 +9,24 @@ let initialState: IState = {
   teamsConfig: {
     topTeam: {
       name: 'TopTeam',
-      member1: { name: '', kills: 0 },
-      member2: { name: '', kills: 0 },
+      member1: { name: '', kills: 0, armor: 0, cash: 0 },
+      member2: { name: '', kills: 0, armor: 0, cash: 0 },
       previousMatchPoints: 0,
     },
     bottomTeam: {
       name: 'BottomTeam',
-      member1: { name: 'Selecciona a tu compañero', kills: 0 },
-      member2: { name: 'Selecciona a tu compañero', kills: 0 },
+      member1: {
+        name: 'Selecciona a tu compañero',
+        kills: 0,
+        armor: 0,
+        cash: 0,
+      },
+      member2: {
+        name: 'Selecciona a tu compañero',
+        kills: 0,
+        armor: 0,
+        cash: 0,
+      },
       previousMatchPoints: 0,
     },
   },
