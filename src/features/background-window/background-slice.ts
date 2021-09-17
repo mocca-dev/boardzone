@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface OverwolfEventPayload {
   event: GameExample.Event[];
@@ -7,17 +7,17 @@ interface OverwolfInfoPayload {
   info: GameExample.Info;
 }
 interface BackgroundState {
-  event: GameExample.Event[];
-  info: GameExample.Info;
+  event: any;
+  info: any;
 }
 
 let initialState: BackgroundState = {
   event: [],
-  info: {}
+  info: null,
 };
 
 const backgroundWindowSlice = createSlice({
-  name: "backgroundWindow",
+  name: 'backgroundWindow',
   initialState,
   reducers: {
     setEvent(state, action: PayloadAction<OverwolfEventPayload>) {
@@ -27,8 +27,8 @@ const backgroundWindowSlice = createSlice({
     setInfo(state, action: PayloadAction<OverwolfInfoPayload>) {
       const { info } = action.payload;
       state.info = info;
-    }
-  }
+    },
+  },
 });
 
 export const { setEvent, setInfo } = backgroundWindowSlice.actions;
