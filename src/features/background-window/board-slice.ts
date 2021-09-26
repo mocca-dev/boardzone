@@ -41,8 +41,15 @@ const boardSlice = createSlice({
         state.teamsConfig = action.payload.config;
       }
     },
-    resetTeamsConfig(state) {
-      state.teamsConfig = initialState.teamsConfig;
+    resetTeamsConfig(state, action: PayloadAction<any>) {
+      let freshState = JSON.parse(JSON.stringify(initialState));
+      if (action.payload) {
+        freshState.teamsConfig.topTeam.previousMatchPoints =
+          action.payload.topPrevPoints;
+        freshState.teamsConfig.bottomTeam.previousMatchPoints =
+          action.payload.bottomPrevPoints;
+      }
+      state.teamsConfig = freshState.teamsConfig;
     },
   },
 });

@@ -7,14 +7,13 @@ import { BoardCanRow } from './BoardCanRow/BoardCanRow';
 
 import { WINDOW_NAMES } from 'app/constants';
 import { useWindow, useDrag } from 'overwolf-hooks';
+import { useTotals } from 'hooks/useTotals';
 
 const { INGAME } = WINDOW_NAMES;
 
 export const Board: FC = () => {
   const { mode, showPrevPoints, showDifference, teamType, showMoney } =
     useAppSelector((state) => state.settings);
-  const [topTotal, setTopTotal] = useState(0);
-  const [bottomTotal, setBottomTotal] = useState(0);
   const [difference, setDifference] = useState(0);
   const [currentDeads, setCurrentDeads] = useState(0);
   const [canBuyDeads, setCanBuyDeads] = useState(0);
@@ -27,34 +26,15 @@ export const Board: FC = () => {
   const updateDragWindow = useCallback(() => {
     if (desktopWindow?.id) setCurrentWindowID(desktopWindow.id);
   }, [desktopWindow, setCurrentWindowID]);
+  const { topTotal, bottomTotal } = useTotals({
+    teamsConfig,
+    teamType,
+    mode,
+  });
 
   useEffect(() => {
     updateDragWindow();
   }, [updateDragWindow]);
-
-  useEffect(() => {
-    if (hasSecond) {
-      setTopTotal(
-        teamsConfig.topTeam.member1.kills + teamsConfig.topTeam.member2.kills
-      );
-      setBottomTotal(
-        teamsConfig.bottomTeam.member1.kills +
-          teamsConfig.bottomTeam.member2.kills
-      );
-    } else {
-      if (teamType === 2) {
-        setTopTotal(
-          teamsConfig.topTeam.member1.kills + teamsConfig.topTeam.member2.kills
-        );
-      } else if (teamType === 3) {
-        setTopTotal(
-          teamsConfig.topTeam.member1.kills +
-            teamsConfig.topTeam.member2.kills +
-            teamsConfig.bottomTeam.member1.kills
-        );
-      }
-    }
-  }, [hasSecond, teamsConfig, mode, teamType]);
 
   useEffect(() => {
     hasSecond &&

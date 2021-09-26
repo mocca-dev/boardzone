@@ -12,7 +12,7 @@ import {
   resetTeamsConfig,
   setTeamsConfig,
 } from 'features/background-window/board-slice';
-import { Loader } from 'components/Loader/Loader';
+// import { Loader } from 'components/Loader/Loader';
 import {
   setMode,
   setShowDifference,
@@ -22,6 +22,7 @@ import {
 } from './settings-slice';
 import { RootReducer } from 'app/rootReducer';
 import { useSelector } from 'react-redux';
+import { useTotals } from 'hooks/useTotals';
 
 export interface IRoster {
   assists: any;
@@ -97,6 +98,11 @@ const DesktopWindow: FC = () => {
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
   const { event, info } = useSelector((state: RootReducer) => state.background);
+  const { topTotal, bottomTotal } = useTotals({
+    teamsConfig,
+    teamType,
+    mode,
+  });
 
   // useEffect(() => {
   //   console.log('DESKTOP', overwolf.windows.getWindowsStates('in_game'));
@@ -105,7 +111,13 @@ const DesktopWindow: FC = () => {
     const currentEvent = event.events && event.events[0];
     console.info('eventDesktop', currentEvent, event.events);
     if (currentEvent && currentEvent.name === 'match_end') {
-      dispatch(resetTeamsConfig());
+      dispatch(
+        resetTeamsConfig({
+          topPrevPoints: topTotal,
+          bottomPrevPoints: bottomTotal,
+        })
+      );
+
       setTeam([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,7 +125,7 @@ const DesktopWindow: FC = () => {
 
   useEffect(() => {
     // console.log('INFON', info);
-    dispatch(setTeamsConfig({ config: null }));
+    // dispatch(setTeamsConfig({ config: null }));
     if (info) {
       // dispatch(setShow({ show: true }));
       if (!localPlayer) dispatch(setText({ text: 'Searching for you...' }));
