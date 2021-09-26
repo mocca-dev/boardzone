@@ -1,9 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { BoardRow } from './BoardRow/BoardRow';
 import style from './Board.module.css';
 import { BoardHeader } from './BoardHeader/BoardHeader';
 import { useAppSelector } from 'app/hooks';
 import { BoardCanRow } from './BoardCanRow/BoardCanRow';
+
+import { WINDOW_NAMES } from 'app/constants';
+import { useWindow, useDrag } from 'overwolf-hooks';
+
+const { INGAME } = WINDOW_NAMES;
 
 export const Board: FC = () => {
   const { mode, showPrevPoints, showDifference, teamType, showMoney } =
@@ -17,6 +22,15 @@ export const Board: FC = () => {
   const [canBuyBox, setCanBuyBox] = useState(false);
   const [hasSecond, setHasSecond] = useState(false);
   const { teamsConfig } = useAppSelector((state) => state.board);
+  const [desktopWindow] = useWindow(INGAME);
+  const { onDragStart, onMouseMove, setCurrentWindowID } = useDrag(null);
+  const updateDragWindow = useCallback(() => {
+    if (desktopWindow?.id) setCurrentWindowID(desktopWindow.id);
+  }, [desktopWindow, setCurrentWindowID]);
+
+  useEffect(() => {
+    updateDragWindow();
+  }, [updateDragWindow]);
 
   useEffect(() => {
     if (hasSecond) {
@@ -83,7 +97,11 @@ export const Board: FC = () => {
   }, [teamsConfig, currentDeads, hasSecond, teamType]);
 
   return (
-    <div className={style.container}>
+    <div
+      className={style.container}
+      onMouseDown={(event) => onDragStart(event)}
+      onMouseMove={(event) => onMouseMove(event)}
+    >
       <BoardHeader />
       <div className={style.bodyContainer}>
         <div className={style.rowsContainer}>

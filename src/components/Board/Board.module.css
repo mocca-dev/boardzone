@@ -2,6 +2,7 @@
   color: white;
   width: 230px;
   background: rgba(0, 0, 0, 0.24);
+  cursor: grab;
 }
 
 .bodyContainer {
