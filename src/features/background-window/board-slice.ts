@@ -36,12 +36,17 @@ const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    setTeamsConfig(state, action: PayloadAction<{ config: any }>) {
-      state.teamsConfig = action.payload.config;
+    setTeamsConfig(state, action: PayloadAction<any>) {
+      if (action.payload.config) {
+        state.teamsConfig = action.payload.config;
+      }
+    },
+    resetTeamsConfig(state) {
+      state.teamsConfig = initialState.teamsConfig;
     },
   },
 });
 
-export const { setTeamsConfig } = boardSlice.actions;
+export const { setTeamsConfig, resetTeamsConfig } = boardSlice.actions;
 
 export default boardSlice.reducer;

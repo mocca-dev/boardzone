@@ -8,9 +8,11 @@ import { Board } from 'components/Board/Board';
 import switchBtn from './switch-btn.png';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { setShow, setText } from './loader-slice';
-import { setTeamsConfig } from 'features/background-window/board-slice';
+import {
+  resetTeamsConfig,
+  setTeamsConfig,
+} from 'features/background-window/board-slice';
 import { Loader } from 'components/Loader/Loader';
-import { eventObservable } from 'mocks/events';
 import {
   setMode,
   setShowDifference,
@@ -18,6 +20,8 @@ import {
   setShowPrevPoints,
   setTeamType,
 } from './settings-slice';
+import { RootReducer } from 'app/rootReducer';
+import { useSelector } from 'react-redux';
 
 export interface IRoster {
   assists: any;
@@ -90,82 +94,98 @@ const DesktopWindow: FC = () => {
   const { teamsConfig } = useAppSelector((state) => state.board);
   const { mode, showPrevPoints, showDifference, teamType, showMoney } =
     useAppSelector((state) => state.settings);
-  const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
+  const { event, info } = useSelector((state: RootReducer) => state.background);
 
+  // useEffect(() => {
+  //   console.log('DESKTOP', overwolf.windows.getWindowsStates('in_game'));
+  // });
   useEffect(() => {
-    eventObservable.subscribe((event: any) => {
-      setCurrentEvent(event);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (currentEvent) {
-      dispatch(setShow({ show: true }));
-      if (!localPlayer) dispatch(setText({ text: 'Searching for you...' }));
-
-      const rosterKey = Object.keys(currentEvent.info.match_info)[0];
-      const roster: IRoster = getKeyValue(rosterKey)(
-        currentEvent.info.match_info
-      );
-
-      if (roster.is_local) {
-        setLocalPlayer(roster);
-        dispatch(
-          setTeamsConfig({
-            config: {
-              ...teamsConfig,
-              topTeam: {
-                ...teamsConfig.topTeam,
-                name: 'Team' + roster.player.split('#')[0],
-                member1: {
-                  name: roster.player,
-                  kills: roster.kills,
-                  armor: roster.armor,
-                  cash: roster.cash,
-                },
-              },
-            },
-          })
-        );
-      } else if (
-        typeof roster === 'object' &&
-        roster.team_id === localPlayer?.team_id &&
-        roster.player !== localPlayer?.player
-      ) {
-        dispatch(setText({ text: 'Searching for your team...' }));
-
-        const isAlreadyInTheTeam = team?.some(
-          (member) => roster.player === member.player
-        );
-        if (!isAlreadyInTheTeam) {
-          setTeam([...team, { ...roster }]);
-        } else {
-          const rosterIndex = team.findIndex(
-            (player) => player.player === roster.player
-          );
-
-          const updatedRoster = {
-            ...team[rosterIndex],
-            kills: roster.kills,
-            armor: roster.armor,
-            cash: roster.cash,
-          };
-          const newTeam = [
-            ...team.slice(0, rosterIndex),
-            updatedRoster,
-            ...team.slice(rosterIndex + 1, team.length),
-          ];
-
-          setTeam(newTeam);
-        }
-      }
-
-      dispatch(setShow({ show: false }));
+    const currentEvent = event.events && event.events[0];
+    console.info('eventDesktop', currentEvent, event.events);
+    if (currentEvent && currentEvent.name === 'match_end') {
+      dispatch(resetTeamsConfig());
+      setTeam([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentEvent]);
+  }, [event]);
+
+  useEffect(() => {
+    // console.log('INFON', info);
+    dispatch(setTeamsConfig({ config: null }));
+    if (info) {
+      // dispatch(setShow({ show: true }));
+      if (!localPlayer) dispatch(setText({ text: 'Searching for you...' }));
+
+      if (
+        Object.keys(info.info).length !== 0 &&
+        info.feature === 'match_info'
+      ) {
+        const rosterKey = Object.keys(info.info.match_info)[0];
+
+        if (rosterKey.includes('roster')) {
+          const roster: IRoster = JSON.parse(
+            getKeyValue(rosterKey)(info.info.match_info)
+          );
+          if (roster.is_local) {
+            setLocalPlayer(roster);
+            dispatch(
+              setTeamsConfig({
+                config: {
+                  ...teamsConfig,
+                  topTeam: {
+                    ...teamsConfig.topTeam,
+                    name: 'Team' + roster.player.split('#')[0],
+                    member1: {
+                      name: roster.player,
+                      kills: roster.kills,
+                      armor: roster.armor,
+                      cash: roster.cash,
+                    },
+                  },
+                },
+              })
+            );
+          } else if (
+            typeof roster === 'object' &&
+            roster.team_id === localPlayer?.team_id &&
+            roster.player !== localPlayer?.player
+          ) {
+            dispatch(setText({ text: 'Searching for your team...' }));
+
+            const isAlreadyInTheTeam = team?.some(
+              (member) => roster.player === member.player
+            );
+            if (!isAlreadyInTheTeam) {
+              setTeam([...team, { ...roster }]);
+            } else {
+              const rosterIndex = team.findIndex(
+                (player) => player.player === roster.player
+              );
+
+              const updatedRoster = {
+                ...team[rosterIndex],
+                kills: roster.kills,
+                armor: roster.armor,
+                cash: roster.cash,
+              };
+              const newTeam = [
+                ...team.slice(0, rosterIndex),
+                updatedRoster,
+                ...team.slice(rosterIndex + 1, team.length),
+              ];
+
+              setTeam(newTeam);
+            }
+          }
+        }
+
+        dispatch(setShow({ show: false }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [info]);
 
   useEffect(() => {
     if (team.length > teamType) {
@@ -313,7 +333,7 @@ const DesktopWindow: FC = () => {
     <>
       <DesktopHeader />
       <div className={style.container}>
-        <Loader />
+        {/* <Loader /> */}
         <main className={style.main}>
           <form action="">
             <span>
