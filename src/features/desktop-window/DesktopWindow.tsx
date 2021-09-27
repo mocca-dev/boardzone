@@ -23,6 +23,7 @@ import {
 import { RootReducer } from 'app/rootReducer';
 import { useSelector } from 'react-redux';
 import { useTotals } from 'hooks/useTotals';
+import { Tip } from 'components/Tip/Tip';
 
 export interface IRoster {
   assists: any;
@@ -348,20 +349,31 @@ const DesktopWindow: FC = () => {
         {/* <Loader /> */}
         <main className={style.main}>
           <form action="">
-            <span>
-              <SubTitle>{t('components.desktop.type')}</SubTitle>
-              <div className={style.formRow}>
-                <FormInput
-                  onChange={(e) =>
-                    setSelectedTeamType(e.target.value, dispatch, t)
-                  }
-                  value=""
-                  type="radio"
-                  label={`${t('components.desktop.duo')}-${t(
-                    'components.desktop.trio'
-                  )}-${t('components.desktop.squad')}`}
-                />
-              </div>
+            <span className={style.teamRow}>
+              <span>
+                <SubTitle>{t('components.desktop.type')}</SubTitle>
+                <div className={style.formRow}>
+                  <FormInput
+                    onChange={(e) =>
+                      setSelectedTeamType(e.target.value, dispatch, t)
+                    }
+                    value=""
+                    type="radio"
+                    label={`${t('components.desktop.duo')}-${t(
+                      'components.desktop.trio'
+                    )}-${t('components.desktop.squad')}`}
+                  />
+                </div>
+              </span>
+              <Tip>
+                <strong>{t('components.desktop.positionTip.title')}</strong>
+                <p>
+                  {t('components.desktop.positionTip.firstLine')}{' '}
+                  <strong>{t('components.desktop.positionTip.crtlTab')}</strong>{' '}
+                  {t('components.desktop.positionTip.secondLine')}{' '}
+                  <strong>{t('components.desktop.positionTip.crtlTab')}</strong>
+                </p>
+              </Tip>
             </span>
             <span>
               <SubTitle>{t('components.desktop.money')}</SubTitle>

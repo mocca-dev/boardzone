@@ -22,7 +22,13 @@
       "trio": "Trio",
       "squad": "Squad",
       "money": "Show me the money",
-      "moneyLabel": "Show/Hide money data"
+      "moneyLabel": "Show/Hide money data",
+      "positionTip": {
+        "title": "Positioning InGame window",
+        "firstLine": "If you want to position the in-game board, you must press the keys",
+        "crtlTab": "ctrl+tab",
+        "secondLine": "and you can freely move the board to the desired position. Once you are ready, press again."
+      }
     }
   }
 }

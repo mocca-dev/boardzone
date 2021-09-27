@@ -1,0 +1,9 @@
+.tipContainer {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 400px;
+  padding: 0px 20px;
+  padding-top: 10px;
+  margin-left: 70px;
+  margin-top: 15px;
+  border-radius: 3px;
+}

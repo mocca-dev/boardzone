@@ -22,7 +22,13 @@
       "trio": "Trío",
       "squad": "Cuarteto",
       "money": "Información de dinero",
-      "moneyLabel": "Mostrar/Ocultar la data sobre el dinero"
+      "moneyLabel": "Mostrar/Ocultar la data sobre el dinero",
+      "positionTip": {
+        "title": "Posicionamiento ventana InGame",
+        "firstLine": "Si deseas posicionar el board in-game, deberas presionar las teclas",
+        "crtlTab": "ctrl+tab",
+        "secondLine": "y podras mover libremente el board hasta la posicion deseada. Una vez que estes listo, vuelve a presionar."
+      }
     }
   }
 }
