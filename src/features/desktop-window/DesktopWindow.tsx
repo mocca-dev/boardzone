@@ -375,7 +375,7 @@ const DesktopWindow: FC = () => {
                 </p>
               </Tip>
             </span>
-            <span>
+            {/* <span>
               <SubTitle>{t('components.desktop.money')}</SubTitle>
               <div className={style.formRow}>
                 <div className={style.formRow}>
@@ -389,7 +389,7 @@ const DesktopWindow: FC = () => {
                   />
                 </div>
               </div>
-            </span>
+            </span> */}
             <SubTitle>{t('components.desktop.teamsHeader')}</SubTitle>
             <div className={style.formRow}>
               <FormInput

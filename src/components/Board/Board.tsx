@@ -135,7 +135,7 @@ export const Board: FC = () => {
           </span>
         )}
       </div>
-      {showMoney && (
+      {/* {showMoney && (
         <div className={style.footerContainer}>
           <BoardCanRow
             canBuyBox={canBuyBox}
@@ -144,7 +144,7 @@ export const Board: FC = () => {
             totalCash={totalCash}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
