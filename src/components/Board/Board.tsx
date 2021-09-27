@@ -37,13 +37,18 @@ export const Board: FC = () => {
   }, [updateDragWindow]);
 
   useEffect(() => {
-    hasSecond &&
-      setDifference(
-        topTotal +
-          teamsConfig.topTeam.previousMatchPoints -
-          (bottomTotal + teamsConfig.bottomTeam.previousMatchPoints)
-      );
-  }, [topTotal, bottomTotal, hasSecond, teamsConfig]);
+    if (hasSecond) {
+      if (showPrevPoints) {
+        setDifference(
+          topTotal +
+            teamsConfig.topTeam.previousMatchPoints -
+            (bottomTotal + teamsConfig.bottomTeam.previousMatchPoints)
+        );
+      } else {
+        setDifference(topTotal - bottomTotal);
+      }
+    }
+  }, [topTotal, bottomTotal, hasSecond, teamsConfig, showPrevPoints]);
 
   useEffect(() => {
     setHasSecond(mode && teamType === 4);
