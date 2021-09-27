@@ -4,7 +4,7 @@ import { useWindow, useDrag } from 'overwolf-hooks';
 import { useTranslation } from 'react-i18next';
 import { SVGComponent } from './DesktopHeaderSVG';
 import style from './DesktopHeader.module.css';
-import { TwitterIcon } from 'components/TwitterIcon/TwitterIcon';
+import { InstagramLogo } from 'components/InstagramLogo/InstagramLogo';
 
 interface Languaje {
   en: { nativeName: string };
@@ -15,7 +15,7 @@ const lngs: Languaje = {
   en: { nativeName: 'English' },
   es: { nativeName: 'Español' },
 };
-const { DESKTOP, BACKGROUND } = WINDOW_NAMES;
+const { DESKTOP, BACKGROUND, INGAME } = WINDOW_NAMES;
 
 const langBtnClass = (style: any, lng: string, i18n: any): string => {
   let langClass: string = style.langBtn;
@@ -56,6 +56,13 @@ export const DesktopHeader: FC = () => {
     const lang = localStorage.getItem('lang') || '';
     i18n.changeLanguage(lang);
   }, [i18n]);
+
+  // useEffect(() => {
+  //   overwolf.windows.obtainDeclaredWindow(INGAME, (window) => {
+  //     console.log('ANDAAAA', window);
+  //     overwolf.windows.bringToFront(window.id);
+  //   });
+  // }, []);
 
   return (
     <>
@@ -99,12 +106,12 @@ export const DesktopHeader: FC = () => {
            */}
           <a
             className={style.aButton}
-            href="https://www.twitter.com"
+            href="https://www.instagram.com/boardzoneapp/"
             target="_blank"
             rel="noreferrer"
           >
             <button className={`${style.icon} ${style['window-control']}`}>
-              <TwitterIcon />
+              <InstagramLogo />
             </button>
           </a>
           <button
