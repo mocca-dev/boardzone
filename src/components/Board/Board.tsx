@@ -16,7 +16,7 @@ export const Board: FC = () => {
     (state) => state.settings
   );
   const [difference, setDifference] = useState(0);
-  const [currentDeads, setCurrentDeads] = useState(0);
+  // const [currentDeads, setCurrentDeads] = useState(0);
   // const [canBuyDeads, setCanBuyDeads] = useState(0);
   // const [totalCash, setTotalCash] = useState(0);
   // const [canBuyBox, setCanBuyBox] = useState(false);
