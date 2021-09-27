@@ -16,7 +16,6 @@ import {
 import {
   setMode,
   setShowDifference,
-  setShowMoney,
   setShowPrevPoints,
   setTeamType,
 } from './settings-slice';
@@ -94,8 +93,9 @@ const DesktopWindow: FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { teamsConfig } = useAppSelector((state) => state.board);
-  const { mode, showPrevPoints, showDifference, teamType, showMoney } =
-    useAppSelector((state) => state.settings);
+  const { mode, showPrevPoints, showDifference, teamType } = useAppSelector(
+    (state) => state.settings
+  );
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
   const [team, setTeam] = useState<IRoster[]>([]);
   const { event, info } = useSelector((state: RootReducer) => state.background);
@@ -108,6 +108,36 @@ const DesktopWindow: FC = () => {
   // useEffect(() => {
   //   console.log('DESKTOP', overwolf.windows.getWindowsStates('in_game'));
   // });
+
+  const resetBoard = () => {
+    dispatch(
+      resetTeamsConfig({
+        topPrevPoints: topTotal,
+        bottomPrevPoints: bottomTotal,
+      })
+    );
+
+    setTeam([]);
+  };
+
+  const resetPrevs = () => {
+    dispatch(
+      setTeamsConfig({
+        config: {
+          ...teamsConfig,
+          topTeam: {
+            ...teamsConfig.topTeam,
+            previousMatchPoints: 0,
+          },
+          bottomTeam: {
+            ...teamsConfig.bottomTeam,
+            previousMatchPoints: 0,
+          },
+        },
+      })
+    );
+  };
+
   useEffect(() => {
     const currentEvent = event.events && event.events[0];
     console.info('eventDesktop', currentEvent, event.events);
@@ -375,6 +405,20 @@ const DesktopWindow: FC = () => {
                 </p>
               </Tip>
             </span>
+            <span>
+              <SubTitle>{t('components.desktop.reset.titleSection')}</SubTitle>
+              <div className={style.formRow}>
+                <button
+                  className={style.primaryBtn}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetBoard();
+                  }}
+                >
+                  {t('components.desktop.reset.btnLabel')}
+                </button>
+              </div>
+            </span>
             {/* <span>
               <SubTitle>{t('components.desktop.money')}</SubTitle>
               <div className={style.formRow}>
@@ -599,6 +643,21 @@ const DesktopWindow: FC = () => {
                         type="checkbox"
                         label={t('components.desktop.showPrevMatchPoints')}
                       />
+                    </div>
+                  </span>
+                )}
+                {teamType === 4 && mode && (
+                  <span>
+                    <div className={style.formRow}>
+                      <button
+                        className={style.primaryBtn}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetPrevs();
+                        }}
+                      >
+                        {t('components.desktop.resetPrev')}
+                      </button>
                     </div>
                   </span>
                 )}

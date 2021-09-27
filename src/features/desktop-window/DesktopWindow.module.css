@@ -9,6 +9,23 @@
   padding: 0 30px;
 }
 
+.primaryBtn {
+  padding: 8px 13px;
+  border-radius: 3px;
+  background: none;
+  border: 1px solid #daea4c;
+  color: #daea4c;
+}
+
+.primaryBtn:hover {
+  background: #daea4c;
+  color: black;
+}
+
+.primaryBtn:active {
+  opacity: 0.7;
+}
+
 @media (max-width: 1000px) {
   .container {
     grid-template-rows: 1fr 230px;

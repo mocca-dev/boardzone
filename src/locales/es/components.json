@@ -28,7 +28,12 @@
         "firstLine": "Si deseas posicionar el board in-game, deberas presionar las teclas",
         "crtlTab": "ctrl+tab",
         "secondLine": "y podras mover libremente el board hasta la posicion deseada. Una vez que estes listo, vuelve a presionar."
-      }
+      },
+      "reset": {
+        "titleSection": "Reiniciar la data del equipo",
+        "btnLabel": "Reset"
+      },
+      "resetPrev": "Reset Prevs"
     }
   }
 }
