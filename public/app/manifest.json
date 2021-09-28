@@ -57,32 +57,30 @@
         },
         "max_size": {
           "width": 1212,
-          "height": 600
+          "height": 700
         },
         "desktop_only": true
       },
       "in_game": {
         "file": "./Files/index.html",
-        "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
         "focus_game_takeover_release_hotkey": "showhide",
         "transparent": true,
         "resizable": true,
-        "override_on_update": true,
         "size": {
           "width": 230,
-          "height": 128
+          "height": 93
         },
         "min_size": {
           "width": 230,
-          "height": 128
+          "height": 93
         },
         "max_size": {
           "width": 230,
-          "height": 128
+          "height": 93
         },
         "start_position": {
-          "top": 500,
+          "top": 600,
           "left": 30
         }
       }
