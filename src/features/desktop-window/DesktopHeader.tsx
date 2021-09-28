@@ -15,7 +15,7 @@ const lngs: Languaje = {
   en: { nativeName: 'English' },
   es: { nativeName: 'Español' },
 };
-const { DESKTOP, BACKGROUND, INGAME } = WINDOW_NAMES;
+const { DESKTOP, BACKGROUND } = WINDOW_NAMES;
 
 const langBtnClass = (style: any, lng: string, i18n: any): string => {
   let langClass: string = style.langBtn;

@@ -380,7 +380,7 @@ const DesktopWindow: FC = () => {
         <main className={style.main}>
           <form action="">
             <span className={style.teamRow}>
-              <span>
+              <span className={style.col}>
                 <SubTitle>{t('components.desktop.type')}</SubTitle>
                 <div className={style.formRow}>
                   <FormInput
@@ -394,6 +394,22 @@ const DesktopWindow: FC = () => {
                     )}-${t('components.desktop.squad')}`}
                   />
                 </div>
+                <span>
+                  <SubTitle>
+                    {t('components.desktop.reset.titleSection')}
+                  </SubTitle>
+                  <div className={style.formRow}>
+                    <button
+                      className={style.primaryBtn}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        resetBoard();
+                      }}
+                    >
+                      {t('components.desktop.reset.btnLabel')}
+                    </button>
+                  </div>
+                </span>
               </span>
               <Tip>
                 <strong>{t('components.desktop.positionTip.title')}</strong>
@@ -403,22 +419,11 @@ const DesktopWindow: FC = () => {
                   {t('components.desktop.positionTip.secondLine')}{' '}
                   <strong>{t('components.desktop.positionTip.crtlTab')}</strong>
                 </p>
+                <strong>{t('components.desktop.restartTip.title')}</strong>
+                <p>{t('components.desktop.restartTip.firstLine')}</p>
               </Tip>
             </span>
-            <span>
-              <SubTitle>{t('components.desktop.reset.titleSection')}</SubTitle>
-              <div className={style.formRow}>
-                <button
-                  className={style.primaryBtn}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetBoard();
-                  }}
-                >
-                  {t('components.desktop.reset.btnLabel')}
-                </button>
-              </div>
-            </span>
+
             {/* <span>
               <SubTitle>{t('components.desktop.money')}</SubTitle>
               <div className={style.formRow}>
@@ -599,66 +604,58 @@ const DesktopWindow: FC = () => {
             {teamType >= 3 && (
               <span className={style.inputsContainer}>
                 {teamType === 4 && (
-                  <span>
-                    <div className={style.formRow}>
-                      <FormInput
-                        onChange={() => dispatch(setMode({ mode: !mode }))}
-                        value={mode}
-                        type="checkbox"
-                        label={t('components.desktop.mode')}
-                      />
-                    </div>
+                  <span className={style.checkContainer}>
+                    <FormInput
+                      onChange={() => dispatch(setMode({ mode: !mode }))}
+                      value={mode}
+                      type="checkbox"
+                      label={t('components.desktop.mode')}
+                    />
+                  </span>
+                )}
+                {teamType === 4 && mode && (
+                  <span className={style.checkContainer}>
+                    <FormInput
+                      onChange={() =>
+                        dispatch(
+                          setShowDifference({
+                            showDifference: !showDifference,
+                          })
+                        )
+                      }
+                      value={showDifference}
+                      type="checkbox"
+                      label={t('components.desktop.difference')}
+                    />
+                  </span>
+                )}
+                {teamType === 4 && mode && (
+                  <span className={style.checkContainer}>
+                    <FormInput
+                      onChange={() =>
+                        dispatch(
+                          setShowPrevPoints({
+                            showPrevPoints: !showPrevPoints,
+                          })
+                        )
+                      }
+                      value={showPrevPoints}
+                      type="checkbox"
+                      label={t('components.desktop.showPrevMatchPoints')}
+                    />
                   </span>
                 )}
                 {teamType === 4 && mode && (
                   <span>
-                    <div className={style.formRow}>
-                      <FormInput
-                        onChange={() =>
-                          dispatch(
-                            setShowDifference({
-                              showDifference: !showDifference,
-                            })
-                          )
-                        }
-                        value={showDifference}
-                        type="checkbox"
-                        label={t('components.desktop.difference')}
-                      />
-                    </div>
-                  </span>
-                )}
-                {teamType === 4 && mode && (
-                  <span>
-                    <div className={style.formRow}>
-                      <FormInput
-                        onChange={() =>
-                          dispatch(
-                            setShowPrevPoints({
-                              showPrevPoints: !showPrevPoints,
-                            })
-                          )
-                        }
-                        value={showPrevPoints}
-                        type="checkbox"
-                        label={t('components.desktop.showPrevMatchPoints')}
-                      />
-                    </div>
-                  </span>
-                )}
-                {teamType === 4 && mode && (
-                  <span>
-                    <div className={style.formRow}>
-                      <button
-                        className={style.primaryBtn}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          resetPrevs();
-                        }}
-                      >
-                        {t('components.desktop.resetPrev')}
-                      </button>
-                    </div>
+                    <button
+                      className={style.primaryBtn}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        resetPrevs();
+                      }}
+                    >
+                      {t('components.desktop.resetPrev')}
+                    </button>
                   </span>
                 )}
               </span>

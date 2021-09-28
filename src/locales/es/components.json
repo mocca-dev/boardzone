@@ -29,6 +29,10 @@
         "crtlTab": "ctrl+tab",
         "secondLine": "y podras mover libremente el board hasta la posicion deseada. Una vez que estes listo, vuelve a presionar."
       },
+      "restartTip": {
+        "title": "La ventana InGame no se ve",
+        "firstLine": "Si la ventana in-game no aparece al iniciar el juego, la mejor solucion es cerrar y vovler a abrir Overwolf. Disculpe las molestias, estamos trabajando en mejor ciertas caracteristicas."
+      },
       "reset": {
         "titleSection": "Reiniciar la data del equipo",
         "btnLabel": "Reset"

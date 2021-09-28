@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   max-width: 210px;
-  margin-bottom: 10px;
 }
 
 .inputLabel {
@@ -75,6 +74,7 @@
   background-position-y: 11px;
   padding-right: 2rem;
   fill: white;
+  margin-bottom: 0;
 }
 
 .inputContainer input:hover,
@@ -157,7 +157,6 @@ input[type='text'].small {
   display: block;
   position: relative;
   padding-left: 35px;
-  margin-bottom: 12px;
   cursor: pointer;
   font-size: 1rem;
   -webkit-user-select: none;

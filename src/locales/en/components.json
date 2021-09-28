@@ -29,6 +29,10 @@
         "crtlTab": "ctrl+tab",
         "secondLine": "and you can freely move the board to the desired position. Once you are ready, press again."
       },
+      "restartTip": {
+        "title": "The in-game window doesn't appear",
+        "firstLine": "If the in-game window does not appear when you start the game, the best solution is to close and reopen Overwolf. Sorry for the inconvenience, we are working to improve some features."
+      },
       "reset": { "titleSection": "Reset team data", "btnLabel": "Reset" },
       "resetPrev": "Reset Prevs"
     }
