@@ -22,7 +22,7 @@ import {
 import { RootReducer } from 'app/rootReducer';
 import { useSelector } from 'react-redux';
 import { useTotals } from 'hooks/useTotals';
-import { Tip } from 'components/Tip/Tip';
+// import { Tip } from 'components/Tip/Tip';
 
 export interface IRoster {
   assists: any;
@@ -97,7 +97,50 @@ const DesktopWindow: FC = () => {
     (state) => state.settings
   );
   const [localPlayer, setLocalPlayer] = useState<IRoster>();
-  const [team, setTeam] = useState<IRoster[]>([]);
+  const [team, setTeam] = useState<IRoster[]>([
+    {
+      assists: null,
+      deaths: null,
+      is_bot: null,
+      is_local: null,
+      kills: 1,
+      ping: null,
+      player: 'Teammate1',
+      rank: null,
+      score: null,
+      team_id: null,
+      armor: null,
+      cash: null,
+    },
+    {
+      assists: null,
+      deaths: null,
+      is_bot: null,
+      is_local: null,
+      kills: 1,
+      ping: null,
+      player: 'Teammate2',
+      rank: null,
+      score: null,
+      team_id: null,
+      armor: null,
+      cash: null,
+    },
+    {
+      assists: null,
+      deaths: null,
+      is_bot: null,
+      is_local: null,
+      kills: 1,
+      ping: null,
+      player: 'Teammate3',
+      rank: null,
+      score: null,
+      team_id: null,
+      armor: null,
+      cash: null,
+    },
+  ]);
   const { event, info } = useSelector((state: RootReducer) => state.background);
   const { topTotal, bottomTotal } = useTotals({
     teamsConfig,
@@ -157,6 +200,20 @@ const DesktopWindow: FC = () => {
   useEffect(() => {
     // console.log('INFON', info);
     // dispatch(setTeamsConfig({ config: null }));
+    setLocalPlayer({
+      assists: null,
+      deaths: null,
+      is_bot: null,
+      is_local: null,
+      kills: 2,
+      ping: null,
+      player: 'YourNickname',
+      rank: null,
+      score: null,
+      team_id: null,
+      armor: null,
+      cash: null,
+    });
     if (info) {
       // dispatch(setShow({ show: true }));
       if (!localPlayer) dispatch(setText({ text: 'Searching for you...' }));
@@ -411,7 +468,7 @@ const DesktopWindow: FC = () => {
                   </div>
                 </span>
               </span>
-              <Tip>
+              {/* <Tip>
                 <strong>{t('components.desktop.positionTip.title')}</strong>
                 <p>
                   {t('components.desktop.positionTip.firstLine')}{' '}
@@ -421,7 +478,7 @@ const DesktopWindow: FC = () => {
                 </p>
                 <strong>{t('components.desktop.restartTip.title')}</strong>
                 <p>{t('components.desktop.restartTip.firstLine')}</p>
-              </Tip>
+              </Tip> */}
             </span>
 
             {/* <span>
