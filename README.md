@@ -1,196 +1,232 @@
-<h1 align="center">
-  Overwolf Modern React Boilerplate 
-</h1>
-<p align="center">
-  <a href="https://github.com/AlbericoD/overwolf-modern-react-boilerplate/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="OMRB is released under the MIT license." />
+<div id="top"></div>
+
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/mocca-dev/boardzone.git">
+    <img src="readme-images/logo.png" alt="Logo" height="80">
   </a>
-  <a href="#contribution">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
-  </a>
- 
+
+<h3 align="center">BoardZone</h3>
+
+  <p align="center">
+    This is an Overflow React chat app based in an idea that I had when I saw Call of Duty Warzone tournament streaming. 
+    <br /> 
+    <!-- <a href="https://socketchat.surge.sh/">View Demo</a> -->
+  </p>
+</div>
+
+<!-- <div align="center">
+  <img src="readme-images/lighthouse-score.png" alt="Logo" height="80">
+</div>
+<br> -->
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Documentation</a>
+      <ul>
+        <li><a href="#prerequisites">What is BoardZone?</a></li>
+        <li><a href="#prerequisites">What can you do with BoradZone?</a></li>
+        <li><a href="#prerequisites">How to Use BoardZone?</a></li>
+        <li><a href="#prerequisites">Out of Game</a></li>
+        <li><a href="#prerequisites">Squads</a></li>
+        <li><a href="#prerequisites">Team’s names</a></li>
+        <li><a href="#prerequisites">Reset</a></li>
+        <li><a href="#prerequisites">In Game</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">BoardZone - FAQ</a>
+    </li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+<div align="center">
+  <img src="readme-images/boardzone-screenshot.png" alt="Logo" height="224">
+</div>
+<br>
+<br>
+<p>
+  This is the desktop menu of the app. In this menu the user can setting up the in-game board. This app is forked from a framework known as <a href="https://github.com/AlbericoD/overwolf-modern-react-boilerplate">Overwolf Modern React Boilerplate</a> and this framework is created for build apps to publish in the <a href="https://www.overwolf.com/">Overwolf</a> store. Overflow is a desktop app for windows to run other apps as an overlay in front games. In this case I tried to build a board to show the points of the team in a Call of Duty Warzone party in-game.
 </p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-<h3 align="center">
-  <a href="#-quick-start">Quickstart</a>
-  <span> · </span>
-  <a href="#-project-structure---feature-folder">Project structure</a>
-  <span> · </span>
-  <a href="https://www.npmjs.com/package/overwolf-hooks">Overwolf Custom Hooks</a>
-  <span> · </span>
-  <a href="#-remote-redux-debug">Remote Debug</a>
-  <span> · </span>
-  <a href="https://github.com/AlbericoD/overwolf-modern-react-boilerplate/blob/master/CONTRIBUTING.md">Contribution</a>
-  <span> · </span>
-</h3>
 
-> This is the official [Overwolf Modern React Boilerplate](https://github.com/AlbericoD/overwolf-modern-react-boilerplate) template for [Create React App](https://github.com/facebook/create-react-app).
 
-> OMRB is a free and open source opinionated boilerplate based on React that helps developers create fast, modular and modern overwolf app.
+### Built With
 
-### Technology
+* [React.js ⚛️](https://reactjs.org/)
+* [Overwolf 🐺](https://www.overwolf.com/)
+* [Overwolf Modern React Boilerplate](https://github.com/AlbericoD/overwolf-modern-react-boilerplate)
+* [Overwolf Hooks](https://www.npmjs.com/package/overwolf-hooks)
+* [Redux Tooltik](https://redux-toolkit.js.org/)
+* [i18next](https://www.i18next.com/)
 
-<h4 align="center">
-  <a href="https://reactjs.org/">React JS</a>
-  <span> · </span>
-  <a href="https://redux-toolkit.js.org/">Redux ToolKit</a>
-  <span> · </span>
-  <a href="https://www.i18next.com/">I18next</a>
-  <span> · </span>
-  <a href="https://github.com/reduxjs/redux-devtools">Redux Devtools - Remote</a>
-   <span> · </span>
-  <a href="https://overwolf.github.io/">Overwolf Api</a>
-</h4>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-- **Use a Modern Stack for Every App.** Create a uniform workflow for you and your team without ejecting the Create React App code.
 
-- **Internationalization.** Support for multiple languages without having to change code.
 
-- **Performance Is Baked In.** Custom hooks with functions and variables memoized for common uses in overwolf development.
+<!-- GETTING STARTED -->
+## Documentation
 
-- **Build.** Folders and structure ready for use in the overwolf store.
+### What is BoardZone?
+BoardZone is an app that allows you to quickly and easily see the kills of your teammates and opponents while in-game and playing Warzone. It's the best tool for players who want to play wagers, tournaments or follow a record.
 
----
+### What can you do with BoradZone?
+<ul>
+<li>Quickly see the number of kills of your teammates and opponents.</li>
+<li>For the streamer, add a scoreboard in-game to show the kills to viewers.</li>
+<li>Show the difference between your team and the other one.</li>
+<li>See previous match kills and calculate the kills between the current match and the previous one.</li>
+</ul>
 
-## 🚀 Quick Start
 
-### Prerequisites
+### How to Use BoardZone?
+BoardZone can be used both in-game and out of game. This article will show you how to make the most out of BoardZone step-by-step!
+ 
+### Out of Game
+When you are out of game you can easily set up your team to show the correct score board. You can set the team type between Duo, Trio and Squad. In the special case of Squads, you can change other settings. 
+<br>
+<div align="center">
+  <img src="readme-images/screen1.png" alt="Logo" height="224">
+</div>
+<br>
+When you start the app you can see that there’s no data loaded, you have to launch Warzone and start a game to see your data and your team. The only thing you must set is the second player of your team, the rest of the team will be filled automatically. 
 
-- Install [Node.js](https://nodejs.org)
-- Install [npm](https://www.npmjs.com/)
+<br>
+<div align="center">
+  <img src="readme-images/screen2.png" alt="Logo" height="224">
+</div>
+<br>
 
-To use this template, add `--template overwolf-typescript-redux` when creating a new app.
+### Squads
 
-For example:
+<br>
+<div align="center">
+  <img src="readme-images/screen3.png" alt="Logo" height="224">
+</div>
+<br>
 
-```sh
-npx create-react-app my-app --template overwolf-typescript-redux
+If you select “Squads” as team type you will see that several new options appear above. 
+<ul>
+<li>
+<strong>
+2v2
+</strong>
+ <br>
+	If this is checked you will have two teams of two players separately and the other options appear. If it’s unchecked you are in a team of four players and all the kills will be summed up in one counter. This can be used to track the overall kills of the team following a record.
+  </strong>
+  <li>
+  <strong>
+Difference
+</strong>
+ <br>
+When this feature is checked the difference indicator shows up in the in-game board to show the difference in kills that the teams have. 
+</li>
+<li>
+<strong>
+Previous Points
+</strong>
+ <br>
+If you want to sum up the kills of previous matches of your current tournament/wager, you can check this option and will see that a new counter shows up on the board. The total difference will be updated with those previous points. The app will automatically update those values when a match ends, but if you want, you can edit the values directly from the “Previous Match” inputs.
+</li>
+</ul>
 
-# or
+<br>
+<div align="center">
+  <img src="readme-images/screen4.png" alt="Logo" height="224">
+</div>
+<br>
 
-yarn create react-app my-app --template overwolf-typescript-redux
-```
+### Team’s names
+The app will automatically fill up the team’s names but you can easily change it by editing the names directly from the inputs. 
 
-For more information, please refer to:
+<br>
+<div align="center">
+  <img src="readme-images/screen5.png" alt="Logo" height="224">
+</div>
+<br>
 
-- [Getting Started](https://create-react-app.dev/docs/getting-started) – How to create a new app.
-- [User Guide](https://create-react-app.dev) – How to develop apps bootstrapped with Create React App.
+### Reset
+You can reset all the data if you want. After a few seconds the data will be updated automatically. 
 
-## 💼 Project structure - Feature Folder.
+<br>
+<div align="center">
+  <img src="readme-images/screen6.png" alt="Logo" height="224">
+</div>
+<br>
 
-Folder-by-type only works on small-scale projects. Folder-by-feature is superior in the majority of cases, is better due to its scalability, stands out in high modularity and cohesion. It allows us to play with the components' scope.
+ If you want to reset the points of the previous matches you can click the “Reset Prevs” button.
 
-```text
-.
-|--- public
-|    |--- app/
-|    |-------IconMouseNormal.png
-|    |-------IconMouseOver.png
-|    |-------TaskbarIcon.png
-|    |-------desktop-icon.ico
-|    |-------manifest.json
-|    |--- store/
-|    |-------description.txt
-|    |-------store.json
-|    |--- index.html
-|--- src
-|    |--- app/
-|    |-------App.css
-|    |-------App.tsx
-|    |-------constants.ts
-|    |-------rootReducer.ts
-|    |-------store.ts
-|    |--- components/*/**.tsx
-|    |--- features/*/**.tsx
-|    |--- typings/*/**.d.ts
-|    |--- locales/
-|    |-----------de/**/*.json
-|    |-----------de/index.ts
-|    |-----------en/**/*.json
-|    |-----------en/index.ts
-|    |-----------es/**/*.json
-|    |-----------es/index.ts
-|    |-----------fr/**/*.json
-|    |-----------fr/index.ts
-|    |-----------it/**/*.json
-|    |-----------it/index.ts
-|    |-----------ko/**/*.json
-|    |-----------ko/index.ts
-|    |-----------pl/**/*.json
-|    |-----------pl/index.ts
-|    |-----------pt/**/*.json
-|    |-----------pt/index.ts
-|    |-----------ru/**/*.json
-|    |-----------ru/index.ts
-|    |-----------tr/**/*.json
-|    |-----------tr/index.ts
-|    |-----------index.ts
-|    |--- index.tsx
-|    |--- overwolf.dev.mock.ts
-|    |--- react-app-env.d.ts
-|    |--- setupTests.ts
-|--- .gitignore
-|--- LICENSE
-|--- README.md
-|--- create-production-overwolf-build.sh
-|--- package-lock.json
-|--- package.json
-|--- remote-dev-redux-devtools.js
-|--- tsconfig.json
-.
-```
+### In Game
+When you launch the game you can see the in game overlay, the board itself. Here, you will see all the important information to keep track. The green row, the top one, has all the data of your team. You can see the name of your team, the kills of the previous matches and the kills of the current match. Then if you have enabled, you will see the difference of kills between your team and the other one. 
 
-## 🐛 Remote Redux Debug.
+<br>
+<div align="center">
+  <img src="readme-images/screen7.png" alt="Logo" height="224">
+</div>
+<br>
 
-In overwolf it is not possible to install plugins to debug the code, so the alternative is to use something remote to debug an injected code.
+### BoardZone - FAQ
+This article will list possible questions and answers regarding BoardZone, we hope you find what you need!
 
-1. **Install tool.**
+The in-game window doesn't appear!, what to do?
+This happens when you close the app and try to launch it again but you never relaunch the game. To solve this, you have to close the game and run it again with the app opened. You can also try resetting Overwolf. Sorry for the inconvenience, we are working to improve some features.
+The In-Game board isn’t at the correct position, what to do?
+If you want to position the in-game board, you must press the keys ctrl+tab and you can freely move the board to the desired position. Once you are ready, press again.
 
-- Install [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl)
-  in common browser.
 
-2. **Configure**
 
-- if the installation is correct, a redux dev tools icon should appear in your browser's toolbar.
-- click into icon then choose **"Open remote devTools"**
-- click into settings option and let hostname called to **"localhost"** and port **8000**.
 
-3. **Run Server Bridge**
+<!-- LICENSE -->
+## License
 
-- run the server that bridges the remote redux and the overwolf application.
-  ```shell
-  #Change into directory
-  cd overwolf-modern-react-boilerplate
-  npm run start-remote-devtools
-  ```
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-4. **Start debugging**
-   > whenever you want to debug your app store, just remember to use the **remote redux dev tools** + **the bridge server**
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## 📦 Build/Create package for overwolf store.
 
-you need to create an optimized version of your code and the correct structure before sending it to the overwolf store.
-[Overwolf Doc: How to submit an app](https://overwolf.github.io/docs/start/submit-your-app-to-the-store#how-to-submit-an-app)
 
-1. **Compile**
+<!-- CONTACT -->
+## Contact
 
-   ```shell
-   #Change into directory
-   cd overwolf-modern-react-boilerplate
-   npm run build
-   ```
+Nicolás Tonelli - nicolastonelli1406@gmail.com
 
-2. **Organize Folder**
+Project Link: [https://github.com/mocca-dev/boardzone.git](https://github.com/mocca-dev/boardzone.git)
 
-```shell
-   npm run pack-overwolf
-```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-- **OBS 1** this organization script was tested on the git bash and linux terminal.
-- **OBS 2** this organization script needs to be ported to windows bash powershell.
 
-3. **Create .zip**
 
-- the generated code is located in `|--- build/**/.**`
-- Package all **build/** folders to .zip
-- just send your .zip code to the overwolf test team.
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
+[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
+[forks-url]: https://github.com/github_username/repo_name/network/members
+[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
+[stars-url]: https://github.com/github_username/repo_name/stargazers
+[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
+[issues-url]: https://github.com/github_username/repo_name/issues
+[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in//nicolás-tonelli-181624b9/
+[product-screenshot]: images/screenshot.png
