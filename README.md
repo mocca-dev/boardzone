@@ -72,6 +72,7 @@
 ### Built With
 
 * [React.js ⚛️](https://reactjs.org/)
+* [TypeScript](https://www.typescriptlang.org/)
 * [Overwolf 🐺](https://www.overwolf.com/)
 * [Overwolf Modern React Boilerplate](https://github.com/AlbericoD/overwolf-modern-react-boilerplate)
 * [Overwolf Hooks](https://www.npmjs.com/package/overwolf-hooks)
